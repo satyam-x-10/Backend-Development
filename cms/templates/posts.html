@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Posts</title>
+</head>
+<body>
+    <h1>Simple CMS</h1>
+    <a href="/posts/new">Create New Post</a>
+    <hr>
+
+    {% for post in posts %}
+        <div>
+            <h2><a href="/posts/{{ post._id }}">{{ post.title }}</a></h2>
+            <p>By {{ post.author }}</p>
+            <p>{{ post.createdAt }}</p>
+        </div>
+        <hr>
+    {% else %}
+        <p>No blog posts found.</p>
+    {% endfor %}
+</body>
+</html>
