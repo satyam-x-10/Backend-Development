@@ -1,39 +1,36 @@
-# 📝 Blog Content Management System (CMS Lab)
+ Blog Content Management System (CMS Lab)
 
 A server-side rendered Blog Content Management System built with **Python, Flask, PyMongo, and Jinja2 Templates** connected to a local **MongoDB** database instance.
 
-**Author:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))  
-**Course:** Backend Development Lab | UPES, Dehradun
-
 ---
 
-## 📸 Output & Application Previews
+Output & Application Previews
 
-### 1. 🏠 All Posts List (`GET /` & `GET /posts`)
+### 1. All Posts List (`GET /` & `GET /posts`)
 Displays all blog posts showing Title (clickable hyperlink), Author name, and creation date. The full content body is excluded from the query for optimized list performance.
 ![All Posts List](screenshots/01_cms_home_posts_list.png)
 
 ---
 
-### 2. ➕ Create New Post (`GET /posts/new` & `POST /posts`)
+### 2. Create New Post (`GET /posts/new` & `POST /posts`)
 Form to create a new post with Title, Author, and Content fields. Handles POST request validation, generates current date timestamps on the server, and saves into MongoDB.
 ![Create New Post Form](screenshots/02_cms_create_new_post.png)
 
 ---
 
-### 3. 📄 Individual Post Details (`GET /posts/<id>`) & VS Code Terminal
+### 3.  Individual Post Details (`GET /posts/<id>`) & VS Code Terminal
 Retrieves the full post document from MongoDB by its `ObjectId` and renders the complete content. Also displays the Flask server running in the VS Code terminal with active request logs.
 ![Post Details and Terminal](screenshots/03_cms_post_detail_vscode.png)
 
 ---
 
-### 4. 🍃 MongoDB Compass Database View (`cms_lab.posts`)
+### 4. MongoDB Compass Database View (`cms_lab.posts`)
 Live MongoDB Compass view demonstrating data persistence in the `cms_lab` database under the `posts` collection.
 ![MongoDB Compass Collection](screenshots/04_cms_mongodb_compass.png)
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 cms/
@@ -55,7 +52,7 @@ cms/
 
 ---
 
-## 🛣️ API Endpoints & Routes
+## API Endpoints & Routes
 
 | Method | Route | Description | Template Rendered |
 | :--- | :--- | :--- | :--- |
@@ -66,7 +63,7 @@ cms/
 
 ---
 
-## 🍃 MongoDB Schema (Collection: `posts`)
+##  MongoDB Schema (Collection: `posts`)
 
 ```json
 {
@@ -80,18 +77,6 @@ cms/
 
 ---
 
-## ⚡ How to Run Locally
-
-### 1. Prerequisites
-- Python 3.8+
-- Local MongoDB running on `mongodb://127.0.0.1:27017/`
-
-### 2. Install Dependencies & Start Server
-```powershell
-cd cms
-pip install -r requirements.txt
-python app.py
-```
 
 ### 3. Open in Browser
 - **Home / Post List:** [http://127.0.0.1:5000/posts](http://127.0.0.1:5000/posts)
@@ -99,9 +84,9 @@ python app.py
 
 ---
 
-## 📝 Features Checklist
+## Features Checklist
 
-- [x] **MongoDB Connectivity:** Uses `pymongo.MongoClient` with fallback support.
-- [x] **Server-Side Rendering (SSR):** Jinja2 template inheritance.
-- [x] **BSON ObjectId Querying:** Queries individual documents safely using `bson.objectid.ObjectId`.
-- [x] **Date Formatting:** Automatically attaches formatted timestamps (`%d %B %Y`) to posts.
+-  **MongoDB Connectivity:** Uses `pymongo.MongoClient` with fallback support.
+-  **Server-Side Rendering (SSR):** Jinja2 template inheritance.
+-  **BSON ObjectId Querying:** Queries individual documents safely using `bson.objectid.ObjectId`.
+-  **Date Formatting:** Automatically attaches formatted timestamps (`%d %B %Y`) to posts.
