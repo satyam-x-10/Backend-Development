@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar"><a href="/">← Home</a><strong>ℹ️ About</strong></nav>
+<div class="container">
+  <div class="card">
+    <h2>ℹ️ About This Application</h2>
+    <table>
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Node.js Version</td><td><span class="badge green"><%= nodeVersion %></span></td></tr>
+        <tr><td>Express Version</td><td><span class="badge"><%= expressVersion %></span></td></tr>
+        <tr><td>Platform</td><td><%= platform %></td></tr>
+        <tr><td>Server Uptime</td><td><%= uptime %></td></tr>
+      </tbody>
+    </table>
+    <h3 style="margin-top:16px;">Tech Stack</h3>
+    <% stack.forEach(tech => { %>
+      <span class="badge green" style="margin:4px;"><%= tech %></span>
+    <% }) %>
+  </div>
+</div>
+<footer>&copy; 2026 Satyam Koranga – Exp 12</footer>
+</body>
+</html>

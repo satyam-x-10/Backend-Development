@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/">← Home</a>
+  <strong>📝 POST Form Demo</strong>
+</nav>
+<div class="container">
+  <div class="card">
+    <h2>📝 HTML Form – POST Request Handling</h2>
+    <p>Fill in the form and submit. Express reads <code>req.body</code> using <code>express.urlencoded()</code> middleware.</p>
+
+    <% if (error) { %>
+      <div class="alert-error" style="margin-bottom:16px;">❌ <%= error %></div>
+    <% } %>
+    <% if (result) { %>
+      <div class="alert-success" style="margin-bottom:16px;">
+        ✅ <strong>Form submitted successfully!</strong><br>
+        Name: <strong><%= result.name %></strong> |
+        Email: <strong><%= result.email %></strong> |
+        Age: <strong><%= result.age %></strong> |
+        Course: <strong><%= result.course %></strong><br>
+        <small>Submitted at: <%= result.submittedAt %></small>
+      </div>
+    <% } %>
+
+    <form action="/form" method="POST">
+      <label for="name"><strong>Name *</strong></label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+
+      <label for="email"><strong>Email *</strong></label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+      <label for="age"><strong>Age</strong></label>
+      <input type="number" id="age" name="age" placeholder="e.g. 21" min="1" max="100">
+
+      <label for="course"><strong>Course</strong></label>
+      <select id="course" name="course">
+        <option value="">-- Select Course --</option>
+        <option value="Backend Development">Backend Development</option>
+        <option value="Full Stack">Full Stack</option>
+        <option value="Data Science">Data Science</option>
+      </select>
+
+      <button type="submit" class="btn">Submit Form</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>💡 How POST Works in Express</h2>
+    <pre>
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+
+// POST route
+app.post('/form', (req, res) => {
+  const { name, email, age, course } = req.body;
+  // validate and respond...
+});
+    </pre>
+  </div>
+</div>
+<footer>&copy; 2026 Satyam Koranga – Exp 12</footer>
+</body>
+</html>

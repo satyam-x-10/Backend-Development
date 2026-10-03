@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Experiment 1 - All HTML5 Elements Demo">
+  <meta name="author" content="Satyam Koranga">
+  <meta name="keywords" content="HTML5, elements, demo, backend development">
+  <title>Experiment 1 – All HTML5 Elements</title>
+  <base href="./">
+  <style>
+    /* Internal CSS for basic readability */
+    body { font-family: Arial, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; background: #f5f5f5; color: #333; }
+    section { background: #fff; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,.1); }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 6px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #3498db; color: white; }
+    canvas { border: 1px solid #999; }
+    details { margin: 8px 0; }
+    meter, progress { width: 200px; }
+    .output-box { background: #ecf0f1; padding: 10px; border-radius: 4px; font-family: monospace; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- ======================== HEADER & NAV ======================== -->
+<header>
+  <hgroup>
+    <h1>Experiment 1 – All HTML5 Elements</h1>
+    <p>Backend Development Lab | UPES | Satyam Koranga</p>
+  </hgroup>
+  <nav>
+    <ul>
+      <li><a href="#text">Text</a></li>
+      <li><a href="#lists">Lists</a></li>
+      <li><a href="#tables">Tables</a></li>
+      <li><a href="#forms">Forms</a></li>
+      <li><a href="#media">Media</a></li>
+      <li><a href="#semantic">Semantic</a></li>
+      <li><a href="#interactive">Interactive</a></li>
+      <li><a href="#canvas">Canvas &amp; SVG</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ======================== TEXT FORMATTING ======================== -->
+  <section id="text">
+    <h2>1. Text Formatting Elements</h2>
+    <p>This is a <strong>strong (important)</strong> word and this is <em>emphasised</em>.</p>
+    <p><b>Bold</b> | <i>Italic</i> | <u>Underline</u> | <s>Strikethrough</s></p>
+    <p><mark>Highlighted text</mark> | <small>Small text</small> | <del>Deleted</del> | <ins>Inserted</ins></p>
+    <p>H<sub>2</sub>O uses subscript. E=mc<sup>2</sup> uses superscript.</p>
+    <p><abbr title="HyperText Markup Language">HTML</abbr> is the backbone of the web.</p>
+    <blockquote cite="https://developer.mozilla.org">
+      "The Web is the most powerful communication tool ever devised."
+    </blockquote>
+    <p><q>Inline short quotation</q> using the q element.</p>
+    <p><cite>MDN Web Docs</cite> is a great reference.</p>
+    <p><kbd>Ctrl</kbd> + <kbd>C</kbd> copies text. <code>console.log("Hello")</code> is code.</p>
+    <p><var>x</var> = <var>y</var> + 2 uses the var element.</p>
+    <p>Output sample: <samp>Error: file not found</samp></p>
+    <pre>
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+    </pre>
+    <address>Contact: <a href="mailto:satyamkoranga42617@gmail.com">satyamkoranga42617@gmail.com</a></address>
+    <p>Word break: superlongword<wbr>thatmightneedabreak</p>
+    <p>BDO (Bidirectional Override): <bdo dir="rtl">Right to Left</bdo></p>
+    <p>BDI: User <bdi>مرحبا</bdi> logged in.</p>
+    <p>Data element: <data value="42">Forty-two</data></p>
+    <p>Time element: <time datetime="2026-10-03">October 3, 2026</time></p>
+    <p>Ruby annotation: <ruby>漢 <rt>Hàn</rt></ruby></p>
+    <hr>
+    <p>Horizontal rule shown above. Line<br>break shown here.</p>
+  </section>
+
+  <!-- ======================== LISTS ======================== -->
+  <section id="lists">
+    <h2>2. Lists</h2>
+
+    <h3>Unordered List</h3>
+    <ul>
+      <li>Node.js</li>
+      <li>Express.js</li>
+      <li>MongoDB</li>
+    </ul>
+
+    <h3>Ordered List</h3>
+    <ol>
+      <li>Install Node.js</li>
+      <li>Initialize npm</li>
+      <li>Install Express</li>
+    </ol>
+
+    <h3>Description List</h3>
+    <dl>
+      <dt>HTML</dt><dd>HyperText Markup Language – structure of web pages.</dd>
+      <dt>CSS</dt><dd>Cascading Style Sheets – styling of web pages.</dd>
+      <dt>JS</dt><dd>JavaScript – behavior of web pages.</dd>
+    </dl>
+
+    <h3>Nested List</h3>
+    <ul>
+      <li>Frontend
+        <ul>
+          <li>HTML</li>
+          <li>CSS</li>
+        </ul>
+      </li>
+      <li>Backend
+        <ul>
+          <li>Node.js</li>
+          <li>Python</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ======================== TABLES ======================== -->
+  <section id="tables">
+    <h2>3. Tables</h2>
+    <table>
+      <caption>Student Records</caption>
+      <colgroup>
+        <col style="background:#eaf4fb">
+        <col>
+        <col>
+      </colgroup>
+      <thead>
+        <tr><th>Roll No.</th><th>Name</th><th>Branch</th><th>Marks</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>101</td><td>Satyam</td><td>CSE</td><td>95</td></tr>
+        <tr><td>102</td><td>Priya</td><td>ECE</td><td>88</td></tr>
+        <tr><td>103</td><td>Rohit</td><td>CSE</td><td>92</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3"><strong>Average</strong></td><td>91.67</td></tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- ======================== FORMS ======================== -->
+  <section id="forms">
+    <h2>4. Forms – All Input Types</h2>
+    <form action="#" method="POST" enctype="multipart/form-data">
+      <fieldset>
+        <legend>Personal Information</legend>
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" placeholder="Enter first name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required><br><br>
+
+        <label for="pwd">Password:</label>
+        <input type="password" id="pwd" name="pwd" minlength="8"><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}"><br><br>
+
+        <label for="url">Website:</label>
+        <input type="url" id="url" name="url" placeholder="https://example.com"><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob"><br><br>
+
+        <label for="btime">Preferred Time:</label>
+        <input type="time" id="btime" name="btime"><br><br>
+
+        <label for="bdtl">Date-Time Local:</label>
+        <input type="datetime-local" id="bdtl" name="bdtl"><br><br>
+
+        <label for="week">Week:</label>
+        <input type="week" id="week" name="week"><br><br>
+
+        <label for="month">Month:</label>
+        <input type="month" id="month" name="month"><br><br>
+
+        <label for="age">Age (number):</label>
+        <input type="number" id="age" name="age" min="1" max="120"><br><br>
+
+        <label for="range">Satisfaction (range):</label>
+        <input type="range" id="range" name="range" min="0" max="100" value="50"
+               oninput="document.getElementById('rangeVal').textContent=this.value">
+        <span id="rangeVal">50</span><br><br>
+
+        <label for="color">Favourite Color:</label>
+        <input type="color" id="color" name="color" value="#3498db"><br><br>
+
+        <label for="search">Search:</label>
+        <input type="search" id="search" name="search" list="suggestions">
+        <datalist id="suggestions">
+          <option value="Node.js">
+          <option value="Express.js">
+          <option value="MongoDB">
+        </datalist><br><br>
+
+        <label for="file">Upload File:</label>
+        <input type="file" id="file" name="file"><br><br>
+
+        <label>
+          <input type="checkbox" name="agree" value="yes"> I agree to the terms
+        </label><br><br>
+
+        <label>Gender:</label>
+        <input type="radio" name="gender" value="male"> Male
+        <input type="radio" name="gender" value="female"> Female
+        <input type="radio" name="gender" value="other"> Other<br><br>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+          <optgroup label="Asia">
+            <option value="in">India</option>
+            <option value="cn">China</option>
+          </optgroup>
+          <optgroup label="Europe">
+            <option value="de">Germany</option>
+          </optgroup>
+        </select><br><br>
+
+        <label for="bio">Bio (textarea):</label><br>
+        <textarea id="bio" name="bio" rows="4" cols="40" placeholder="Write about yourself…"></textarea><br><br>
+
+        <label>Volume:
+          <output name="volume" id="volumeOut">50</output>
+          <input type="range" name="vol" min="0" max="100" value="50"
+                 oninput="volumeOut.value=this.value">
+        </label><br><br>
+
+        <progress value="65" max="100">65%</progress> 65% complete<br><br>
+        <meter value="0.75" min="0" max="1" low="0.3" high="0.8" optimum="0.9">75%</meter> Meter<br><br>
+
+        <input type="hidden" name="token" value="abc123">
+
+        <button type="submit" style="padding:8px 20px;background:#3498db;color:white;border:none;border-radius:4px;cursor:pointer;">Submit</button>
+        <button type="reset" style="padding:8px 20px;margin-left:8px;">Reset</button>
+        <button type="button" onclick="alert('Button clicked!')">Click Me</button>
+      </fieldset>
+    </form>
+  </section>
+
+  <!-- ======================== MEDIA ======================== -->
+  <section id="media">
+    <h2>5. Media Elements</h2>
+
+    <h3>Image with Figure</h3>
+    <figure>
+      <img src="https://via.placeholder.com/400x200?text=HTML5+Experiment+1"
+           alt="HTML5 Demo Image" width="400" height="200"
+           loading="lazy">
+      <figcaption>Fig 1: Placeholder image demonstrating the &lt;img&gt; tag</figcaption>
+    </figure>
+
+    <h3>Audio</h3>
+    <audio controls>
+      <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg">
+      <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <h3>Video</h3>
+    <video width="400" controls poster="https://via.placeholder.com/400x200?text=Video+Poster">
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      <track kind="subtitles" srclang="en" label="English">
+      Your browser does not support the video tag.
+    </video>
+
+    <h3>Picture (Responsive Images)</h3>
+    <picture>
+      <source srcset="https://via.placeholder.com/800x200?text=Wide+Screen" media="(min-width: 800px)">
+      <source srcset="https://via.placeholder.com/400x200?text=Medium+Screen" media="(min-width: 400px)">
+      <img src="https://via.placeholder.com/200x200?text=Small" alt="Responsive picture">
+    </picture>
+
+    <h3>Image Map</h3>
+    <img src="https://via.placeholder.com/400x100?text=Click+on+regions" alt="Image Map" usemap="#mymap" width="400" height="100">
+    <map name="mymap">
+      <area shape="rect" coords="0,0,133,100" href="#text" alt="Text Section">
+      <area shape="rect" coords="133,0,266,100" href="#forms" alt="Forms Section">
+      <area shape="rect" coords="266,0,400,100" href="#media" alt="Media Section">
+    </map>
+
+    <h3>Embed &amp; Object</h3>
+    <object data="https://www.w3.org/WAI/WCAG21/Techniques/pdf/PDF1.pdf" type="application/pdf" width="400" height="100">
+      <p>PDF not supported. <a href="https://www.w3.org/WAI/WCAG21/Techniques/pdf/PDF1.pdf">Download PDF</a></p>
+    </object>
+    <embed src="https://via.placeholder.com/200x50?text=Embed" type="image/jpeg" width="200" height="50">
+  </section>
+
+  <!-- ======================== SEMANTIC ======================== -->
+  <section id="semantic">
+    <h2>6. Semantic Layout Elements</h2>
+    <article>
+      <header>
+        <h3>Article: What is Backend Development?</h3>
+        <p>Posted on <time datetime="2026-10-03">October 3, 2026</time></p>
+      </header>
+      <p>Backend development refers to the server-side logic of a web application. It includes handling databases, APIs, authentication, and business logic.</p>
+      <section>
+        <h4>Key Technologies</h4>
+        <p>Node.js, Express, MongoDB, PostgreSQL, REST APIs.</p>
+      </section>
+      <footer><p>Author: Satyam Koranga</p></footer>
+    </article>
+    <aside>
+      <h4>Sidebar – Quick Tips</h4>
+      <p>Always validate user input on the server side!</p>
+    </aside>
+  </section>
+
+  <!-- ======================== INTERACTIVE ======================== -->
+  <section id="interactive">
+    <h2>7. Interactive Elements</h2>
+
+    <details>
+      <summary>Click to expand – What is Node.js?</summary>
+      <p>Node.js is a JavaScript runtime built on Chrome's V8 engine. It allows running JS on the server.</p>
+    </details>
+
+    <details>
+      <summary>Click to expand – What is Express.js?</summary>
+      <p>Express.js is a minimal web framework for Node.js. It simplifies routing and middleware setup.</p>
+    </details>
+
+    <br>
+    <button onclick="document.getElementById('myDialog').showModal()"
+            style="padding:8px 20px;background:#27ae60;color:white;border:none;border-radius:4px;cursor:pointer;">
+      Open Dialog
+    </button>
+    <dialog id="myDialog">
+      <h3>Dialog Box</h3>
+      <p>This is an HTML5 native dialog element!</p>
+      <button onclick="document.getElementById('myDialog').close()">Close</button>
+    </dialog>
+
+    <h3>Menu (toolbar)</h3>
+    <menu>
+      <li><button onclick="alert('New clicked')">New</button></li>
+      <li><button onclick="alert('Save clicked')">Save</button></li>
+    </menu>
+
+    <h3>Template Element (cloned via JS)</h3>
+    <template id="card-template">
+      <div style="border:1px solid #ccc;padding:10px;margin:5px;border-radius:4px;">
+        <strong>Card Title</strong><p>Card content here.</p>
+      </div>
+    </template>
+    <button onclick="
+      const t = document.getElementById('card-template');
+      const clone = t.content.cloneNode(true);
+      document.getElementById('card-container').appendChild(clone);
+    " style="padding:8px 20px;background:#9b59b6;color:white;border:none;border-radius:4px;cursor:pointer;">Add Card from Template</button>
+    <div id="card-container"></div>
+  </section>
+
+  <!-- ======================== CANVAS & SVG ======================== -->
+  <section id="canvas">
+    <h2>8. Canvas &amp; SVG</h2>
+
+    <h3>HTML5 Canvas</h3>
+    <canvas id="myCanvas" width="400" height="150">Canvas not supported.</canvas>
+    <script>
+      const ctx = document.getElementById('myCanvas').getContext('2d');
+      // Background
+      ctx.fillStyle = '#2c3e50';
+      ctx.fillRect(0, 0, 400, 150);
+      // Text
+      ctx.fillStyle = '#3498db';
+      ctx.font = 'bold 24px Arial';
+      ctx.fillText('HTML5 Canvas Demo', 50, 60);
+      // Circle
+      ctx.beginPath();
+      ctx.arc(350, 75, 50, 0, Math.PI * 2);
+      ctx.fillStyle = '#e74c3c';
+      ctx.fill();
+      // Line
+      ctx.beginPath();
+      ctx.moveTo(0, 120);
+      ctx.lineTo(400, 120);
+      ctx.strokeStyle = '#27ae60';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    </script>
+
+    <h3>Inline SVG</h3>
+    <svg width="400" height="120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="120" fill="#ecf0f1" rx="8"/>
+      <circle cx="60" cy="60" r="40" fill="#3498db"/>
+      <rect x="130" y="20" width="80" height="80" fill="#e74c3c" rx="8"/>
+      <polygon points="280,20 320,100 240,100" fill="#27ae60"/>
+      <text x="340" y="65" fill="#2c3e50" font-size="14" text-anchor="middle">SVG</text>
+    </svg>
+
+    <h3>noscript Fallback</h3>
+    <noscript>
+      <p style="color:red;">JavaScript is disabled. Some features may not work.</p>
+    </noscript>
+  </section>
+
+  <!-- ======================== MISC ======================== -->
+  <section>
+    <h2>9. Miscellaneous Elements</h2>
+    <p>iframe – Embedding another page:</p>
+    <iframe src="https://example.com" width="400" height="150" title="Example Site" loading="lazy"
+            sandbox="allow-scripts allow-same-origin">
+    </iframe>
+    <p><span style="color:#e74c3c;">span</span> is an inline container with no semantic meaning.</p>
+    <div style="background:#eaf4fb;padding:10px;border-radius:4px;">
+      <strong>div</strong> is a block-level container with no semantic meaning.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; 2026 Satyam Koranga – Backend Development Lab | UPES</p>
+  <p>
+    <a href="https://validator.w3.org/">W3C Validator</a> |
+    <a href="https://developer.mozilla.org/">MDN Web Docs</a>
+  </p>
+</footer>
+
+</body>
+</html>

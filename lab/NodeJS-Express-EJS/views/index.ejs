@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <strong>🟢 Exp 12 – Node.js + Express + EJS</strong>
+  <a href="/">Home</a>
+  <a href="/form">Form</a>
+  <a href="/students">Students</a>
+  <a href="/about">About</a>
+</nav>
+<div class="container">
+  <div class="card">
+    <h1>🚀 <%= title %></h1>
+    <p>Built by <strong><%= author %></strong> | UPES Backend Development Lab | <%= year %></p>
+    <p>This page is rendered by <strong>EJS</strong> (Embedded JavaScript) template engine via <code>res.render()</code>.</p>
+  </div>
+
+  <div class="card">
+    <h2>📋 Available Routes</h2>
+    <p>Click any route to test it. All responses are live from the Express server.</p>
+    <table>
+      <thead><tr><th>#</th><th>Route</th><th>Description</th></tr></thead>
+      <tbody>
+        <% routes.forEach((r, i) => { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><a href="<%= r.path %>"><code><%= r.path %></code></a></td>
+          <td><%= r.desc %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>📦 What is EJS?</h2>
+    <p><strong>EJS (Embedded JavaScript)</strong> lets you embed JS directly in HTML templates using special tags:</p>
+    <pre>
+&lt;% code here %&gt;       — executes JS (no output)
+&lt;%= expression %&gt;     — outputs escaped HTML
+&lt;%- html %&gt;           — outputs unescaped HTML
+&lt;% if (x) { %&gt; ... &lt;% } %&gt;   — conditionals
+&lt;% items.forEach(i => { %&gt; ... &lt;% }) %&gt;  — loops
+    </pre>
+  </div>
+</div>
+<footer>&copy; <%= year %> Satyam Koranga – Exp 12: Node.js, NPM, Express, Nodemon, EJS</footer>
+</body>
+</html>

@@ -1,0 +1,330 @@
+/* =============================================================
+   Experiment 2 – External CSS
+   Demonstrates: Element, Class, ID, Attribute, Pseudo, Combinators
+   Box Model, Flexbox, Grid, Animations, Transitions, Variables
+   ============================================================= */
+
+/* ---------- CSS Custom Properties (Variables) ---------- */
+:root {
+  --primary:   #3498db;
+  --secondary: #2ecc71;
+  --danger:    #e74c3c;
+  --dark:      #2c3e50;
+  --light:     #ecf0f1;
+  --font:      'Segoe UI', Arial, sans-serif;
+}
+
+/* ---------- Universal Selector ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Element / Type Selector ---------- */
+body {
+  font-family: var(--font);
+  background-color: #f0f4f8;
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+h1, h2, h3 { color: var(--dark); }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; border-bottom: 3px solid var(--primary); padding-bottom: 6px; margin-bottom: 16px; }
+h3 { font-size: 1.2rem; }
+
+p  { margin-bottom: 12px; }
+a  { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--dark); } /* Pseudo-class */
+a:visited { color: #9b59b6; }                                /* Pseudo-class */
+a:active  { color: var(--danger); }                         /* Pseudo-class */
+
+ul, ol { padding-left: 24px; margin-bottom: 12px; }
+li { margin-bottom: 4px; }
+code { background: #dfe6e9; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+th, td { border: 1px solid #bdc3c7; padding: 10px 12px; text-align: left; }
+th { background: var(--primary); color: white; }
+tr:nth-child(even) { background: #eaf4fb; }  /* Pseudo-class */
+tr:hover { background: #d6eaf8; }             /* Pseudo-class */
+caption { font-weight: bold; margin-bottom: 8px; color: var(--dark); }
+input, select, textarea { font-family: var(--font); }
+
+/* ---------- ID Selector ---------- */
+#page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+#main-header {
+  background: linear-gradient(135deg, var(--dark), var(--primary));
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+#main-header h1 { color: white; font-size: 2.2rem; }
+#main-header p  { color: #cfe2f3; font-size: 1rem; }
+#main-header nav { margin-top: 16px; }
+#main-header nav a { color: white; margin: 0 12px; font-weight: bold; }
+#main-header nav a:hover { color: var(--secondary); text-decoration: none; }
+
+#main-footer {
+  background: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+#main-footer a { color: var(--secondary); }
+
+/* ---------- Class Selector ---------- */
+.section-card {
+  background: white;
+  margin: 24px 0;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.tag {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin: 2px;
+}
+.tag.green  { background: var(--secondary); }
+.tag.red    { background: var(--danger); }
+
+.highlight { background: #fef9e7; border-left: 4px solid #f39c12; padding: 10px 16px; border-radius: 4px; margin: 12px 0; }
+.note      { background: #eaf4fb; border-left: 4px solid var(--primary); padding: 10px 16px; border-radius: 4px; margin: 12px 0; }
+.alert     { background: #fdecea; border-left: 4px solid var(--danger); padding: 10px 16px; border-radius: 4px; margin: 12px 0; }
+
+/* ---------- Box Model Demo ---------- */
+.box-model-demo {
+  width: 220px;
+  height: 80px;
+  padding: 20px;
+  border: 6px solid var(--primary);
+  margin: 16px auto;
+  background: #eaf4fb;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+}
+
+/* ---------- Flexbox ---------- */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-around;
+  align-items: stretch;
+  margin: 16px 0;
+}
+.flex-item {
+  flex: 1 1 120px;
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  min-width: 100px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.flex-item:hover { transform: translateY(-4px); background: var(--dark); }
+.flex-item.green { background: var(--secondary); }
+.flex-item.red   { background: var(--danger); }
+.flex-item.purple { background: #9b59b6; }
+.flex-item.orange { background: #f39c12; }
+
+/* ---------- Grid ---------- */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.grid-item {
+  background: var(--primary);
+  color: white;
+  padding: 18px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+.grid-item.span2 { grid-column: span 2; background: var(--secondary); }
+.grid-item.span3 { grid-column: span 3; background: var(--dark); }
+.grid-item:nth-child(odd) { background: #2980b9; }
+
+/* ---------- Attribute Selector ---------- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+input[type="search"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  margin-bottom: 12px;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(52,152,219,.2); }
+
+input[required] { border-left: 4px solid var(--danger); }  /* Attribute */
+a[target="_blank"]::after { content: " ↗"; font-size: 0.75em; }  /* Attr + Pseudo-element */
+
+/* ---------- Combinator Selectors ---------- */
+/* Descendant: any p inside .section-card */
+.section-card p { color: #555; }
+/* Child: direct li inside .note */
+.note > ul > li { color: var(--dark); font-weight: bold; }
+/* Adjacent Sibling: p immediately after h3 */
+h3 + p { color: #7f8c8d; font-style: italic; }
+/* General Sibling: all p after .highlight */
+.highlight ~ p { margin-top: 8px; }
+
+/* ---------- Pseudo-elements ---------- */
+p::first-line  { font-weight: bold; color: var(--dark); }
+p::first-letter { font-size: 1.4em; float: left; margin-right: 4px; color: var(--primary); }
+.section-card::before { content: ""; display: block; height: 4px; background: var(--primary); border-radius: 8px 8px 0 0; margin: -24px -24px 16px; }
+.tag::after { content: " ✓"; font-size: 0.7em; }
+
+/* ---------- CSS Animations ---------- */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.05); }
+}
+@keyframes colorShift {
+  0%   { background-color: var(--primary); }
+  33%  { background-color: var(--secondary); }
+  66%  { background-color: var(--danger); }
+  100% { background-color: var(--primary); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+#main-header { animation: fadeInDown 0.8s ease-out; }
+
+.animated-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  animation: colorShift 3s infinite linear;
+  margin: 16px auto;
+}
+
+.spin-box {
+  width: 60px;
+  height: 60px;
+  background: var(--primary);
+  border-radius: 8px;
+  animation: spin 2s linear infinite;
+  margin: 16px auto;
+}
+
+.pulse-btn {
+  animation: pulse 2s ease-in-out infinite;
+  background: var(--secondary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  display: block;
+  margin: 16px auto;
+}
+
+/* ---------- Transitions ---------- */
+.transition-card {
+  background: var(--light);
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 12px 0;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+.transition-card:hover {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 8px 20px rgba(52,152,219,.4);
+  transform: translateX(8px);
+}
+
+/* ---------- Button Styles ---------- */
+.btn {
+  display: inline-block;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: var(--font);
+  transition: all 0.2s ease;
+  margin: 4px;
+}
+.btn-primary { background: var(--primary);   color: white; }
+.btn-success { background: var(--secondary); color: white; }
+.btn-danger  { background: var(--danger);    color: white; }
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.btn:hover { opacity: 0.85; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.btn:active { transform: translateY(0); }
+
+/* ---------- Specificity Demo ---------- */
+.specificity-demo  { color: green; }            /* class  = 10 */
+#specificity-test  { color: blue; }             /* id     = 100 */
+/* inline style would be 1000 */
+
+/* ---------- Responsive – Media Queries ---------- */
+@media (max-width: 768px) {
+  #main-header h1 { font-size: 1.5rem; }
+  .grid-container { grid-template-columns: 1fr; }
+  .flex-container { flex-direction: column; }
+  .grid-item.span2,
+  .grid-item.span3 { grid-column: span 1; }
+  .section-card { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 0.95rem; }
+  h1   { font-size: 1.4rem; }
+  .section-card { margin: 12px 0; padding: 12px; }
+}
+
+@media print {
+  #main-header nav, .btn { display: none; }
+  body { background: white; }
+}
+
+/* ---------- CSS Variables Usage in Themes ---------- */
+[data-theme="dark"] {
+  --dark:  #ecf0f1;
+  --light: #2c3e50;
+  background: #1a252f;
+  color: #ecf0f1;
+}
+[data-theme="dark"] .section-card { background: #2c3e50; }

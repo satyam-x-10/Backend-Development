@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 2 – All Types of CSS</title>
+
+  <!-- 1. EXTERNAL CSS (highest reuse, linked via <link>) -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- 2. INTERNAL CSS (scoped to this page, inside <style> tag) -->
+  <style>
+    /* ---- Internal CSS: overrides external for specifics ---- */
+
+    /* Internal CSS Badge */
+    .internal-badge {
+      background: #27ae60;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* CSS Specificity Demo Classes */
+    .specificity-demo { color: green; }
+    #specificity-test { color: blue; }
+
+    /* Selector Group */
+    h2, h3, h4 { text-rendering: optimizeLegibility; }
+
+    /* before/after pseudo-elements on callouts */
+    .callout {
+      position: relative;
+      background: #eaf4fb;
+      border: 1px solid #3498db;
+      border-radius: 8px;
+      padding: 14px 14px 14px 48px;
+      margin: 12px 0;
+    }
+    .callout::before {
+      content: "💡";
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      font-size: 1.2rem;
+    }
+    .callout.warning::before { content: "⚠️"; }
+    .callout.error::before   { content: "❌"; }
+  </style>
+</head>
+<body id="page-wrapper">
+
+<!-- ========== HEADER ========== -->
+<header id="main-header">
+  <h1>Experiment 2 – Cascading Style Sheets</h1>
+  <p>All CSS Types &amp; Selectors | Backend Development Lab | Satyam Koranga</p>
+  <nav>
+    <a href="#types">CSS Types</a>
+    <a href="#selectors">Selectors</a>
+    <a href="#box">Box Model</a>
+    <a href="#flex">Flexbox</a>
+    <a href="#grid">Grid</a>
+    <a href="#animations">Animations</a>
+    <a href="#responsive">Responsive</a>
+  </nav>
+</header>
+
+<div id="page-wrapper">
+<main>
+
+  <!-- ========== SECTION 1: THREE TYPES OF CSS ========== -->
+  <section class="section-card" id="types">
+    <h2>1. The Three Types of CSS</h2>
+
+    <div class="flex-container">
+      <div class="flex-item">🔴 Inline CSS<br><small>Highest priority</small></div>
+      <div class="flex-item green">🟢 Internal CSS<br><small>One page</small></div>
+      <div class="flex-item" style="background:#2980b9;">🔵 External CSS<br><small>Reusable</small></div>
+    </div>
+
+    <h3>Type A: Inline CSS</h3>
+    <p>Applied directly to an element using the <code>style</code> attribute.</p>
+    <!-- 3. INLINE CSS (highest specificity, least maintainable) -->
+    <p style="color:#e74c3c; font-size:1.1rem; background:#fdecea; padding:8px; border-radius:4px;">
+      This paragraph uses <strong>inline CSS</strong>: <code>color:#e74c3c; font-size:1.1rem;</code>
+    </p>
+    <p style="font-family: 'Courier New', monospace; letter-spacing: 2px; color:#27ae60;">
+      Another inline styled paragraph — monospace font, letter-spacing, green color.
+    </p>
+
+    <h3>Type B: Internal CSS</h3>
+    <p>Defined in the <code>&lt;style&gt;</code> tag inside <code>&lt;head&gt;</code>.
+      Applied to this page only.</p>
+    <p>This element uses an internal-CSS class:
+      <span class="internal-badge">Internal CSS Class</span>
+    </p>
+
+    <h3>Type C: External CSS</h3>
+    <p>Stored in a separate <code>styles.css</code> file, linked via
+      <code>&lt;link rel="stylesheet" href="styles.css"&gt;</code>.</p>
+    <p>All the layout, colors, typography, and animations on this page come from the external sheet.</p>
+
+    <div class="highlight">
+      <strong>Cascade Priority:</strong> Inline (1000) &gt; ID (100) &gt; Class (10) &gt; Element (1)
+    </div>
+  </section>
+
+  <!-- ========== SECTION 2: SELECTORS ========== -->
+  <section class="section-card" id="selectors">
+    <h2>2. CSS Selector Types</h2>
+
+    <table>
+      <thead>
+        <tr><th>Selector</th><th>Syntax</th><th>Specificity</th><th>Live Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Universal</td><td><code>*</code></td><td>0</td>
+            <td><span style="border:1px dashed #999;padding:2px 4px;">* {box-sizing:border-box}</span></td></tr>
+        <tr><td>Element/Type</td><td><code>p</code></td><td>1</td>
+            <td>All paragraphs styled</td></tr>
+        <tr><td>Class</td><td><code>.highlight</code></td><td>10</td>
+            <td><span class="tag">class tag</span></td></tr>
+        <tr><td>ID</td><td><code>#main-header</code></td><td>100</td>
+            <td>Header uses ID selector</td></tr>
+        <tr><td>Attribute</td><td><code>input[required]</code></td><td>10</td>
+            <td>Required inputs get red left border</td></tr>
+        <tr><td>Pseudo-class</td><td><code>a:hover</code></td><td>10</td>
+            <td><a href="#">Hover over this link</a></td></tr>
+        <tr><td>Pseudo-element</td><td><code>p::first-letter</code></td><td>1</td>
+            <td>First letter of paras enlarged</td></tr>
+        <tr><td>Descendant</td><td><code>.section-card p</code></td><td>11</td>
+            <td>p inside .section-card</td></tr>
+        <tr><td>Child</td><td><code>ul > li</code></td><td>2</td>
+            <td>Direct list items</td></tr>
+        <tr><td>Adjacent Sibling</td><td><code>h3 + p</code></td><td>2</td>
+            <td>p immediately after h3 is italic</td></tr>
+        <tr><td>General Sibling</td><td><code>h2 ~ p</code></td><td>2</td>
+            <td>All p after h2</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Specificity Demo</h3>
+    <p>Both selectors target the element below, but ID wins (100 &gt; 10):</p>
+    <p id="specificity-test" class="specificity-demo"
+       style="padding:8px;border-radius:4px;">
+      ← This text is <strong>blue</strong> (ID selector wins over class).
+         Add <code>style="color:red"</code> to make inline win.
+    </p>
+
+    <h3>Attribute Selectors</h3>
+    <div class="callout">Links with <code>target="_blank"</code> get an arrow suffix:
+      <a href="https://nodejs.org" target="_blank">Node.js</a> |
+      <a href="https://expressjs.com" target="_blank">Express.js</a>
+    </div>
+
+    <h3>Pseudo-classes &amp; Pseudo-elements</h3>
+    <ul>
+      <li><code>:hover</code> – Hover this list item to see the row highlight</li>
+      <li><code>:nth-child(even)</code> – Table rows alternate color</li>
+      <li><code>:visited</code> – Already visited links turn purple</li>
+      <li><code>::first-letter</code> – First letter of paragraphs is larger and blue</li>
+      <li><code>::before / ::after</code> – Callout icons injected via CSS content</li>
+    </ul>
+
+    <div class="callout">This is a callout box. The 💡 icon is added by <code>::before</code> pseudo-element.</div>
+    <div class="callout warning">Warning callout — ⚠️ via <code>::before { content: "⚠️" }</code></div>
+    <div class="callout error">Error callout — ❌ via <code>::before { content: "❌" }</code></div>
+  </section>
+
+  <!-- ========== SECTION 3: BOX MODEL ========== -->
+  <section class="section-card" id="box">
+    <h2>3. CSS Box Model</h2>
+    <p>Every element is a rectangular box: <strong>Content → Padding → Border → Margin</strong></p>
+    <div class="box-model-demo">Content Area</div>
+    <div class="note">
+      <ul>
+        <li>Content: 220×80px</li>
+        <li>Padding: 20px on all sides</li>
+        <li>Border: 6px solid blue</li>
+        <li>Margin: 16px auto (centered)</li>
+        <li><code>box-sizing: border-box</code> ensures predictable sizing</li>
+      </ul>
+    </div>
+    <p>Total rendered width = content + padding×2 + border×2 = 220 + 40 + 12 = <strong>272px</strong> (without border-box).</p>
+  </section>
+
+  <!-- ========== SECTION 4: FLEXBOX ========== -->
+  <section class="section-card" id="flex">
+    <h2>4. CSS Flexbox</h2>
+    <p>One-dimensional layout: items arranged in a <strong>row or column</strong>.</p>
+
+    <h3>flex-direction: row | gap | justify-content: space-around</h3>
+    <div class="flex-container">
+      <div class="flex-item">Item 1</div>
+      <div class="flex-item green">Item 2</div>
+      <div class="flex-item red">Item 3</div>
+      <div class="flex-item purple">Item 4</div>
+      <div class="flex-item orange">Item 5</div>
+    </div>
+
+    <div class="callout">Resize the window to see <code>flex-wrap: wrap</code> in action — items wrap to the next row on smaller screens.</div>
+  </section>
+
+  <!-- ========== SECTION 5: GRID ========== -->
+  <section class="section-card" id="grid">
+    <h2>5. CSS Grid</h2>
+    <p>Two-dimensional layout: items placed in <strong>rows AND columns</strong>.</p>
+
+    <h3>grid-template-columns: repeat(3, 1fr)</h3>
+    <div class="grid-container">
+      <div class="grid-item">Item 1</div>
+      <div class="grid-item">Item 2</div>
+      <div class="grid-item">Item 3</div>
+      <div class="grid-item span2">Item 4 (spans 2 columns)</div>
+      <div class="grid-item">Item 5</div>
+      <div class="grid-item span3">Item 6 (spans 3 columns)</div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION 6: ANIMATIONS & TRANSITIONS ========== -->
+  <section class="section-card" id="animations">
+    <h2>6. Animations &amp; Transitions</h2>
+
+    <h3>@keyframes: colorShift (infinite)</h3>
+    <div class="animated-box"></div>
+
+    <h3>@keyframes: spin (rotate)</h3>
+    <div class="spin-box"></div>
+
+    <h3>animation: pulse</h3>
+    <button class="pulse-btn">Pulsing Button</button>
+
+    <h3>Transitions (hover to activate)</h3>
+    <div class="transition-card">
+      <strong>Hover Card 1</strong> – background, color, shadow, translateX transition
+    </div>
+    <div class="transition-card">
+      <strong>Hover Card 2</strong> – same transition effect with different content
+    </div>
+
+    <h3>Button Transitions</h3>
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-danger">Danger</button>
+    <button class="btn btn-outline">Outline</button>
+  </section>
+
+  <!-- ========== SECTION 7: RESPONSIVE (MEDIA QUERIES) ========== -->
+  <section class="section-card" id="responsive">
+    <h2>7. Responsive Design – Media Queries</h2>
+    <table>
+      <thead>
+        <tr><th>Breakpoint</th><th>Target</th><th>What changes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>max-width: 768px</td><td>Tablets</td><td>Grid → 1 col, Flex → column, smaller header</td></tr>
+        <tr><td>max-width: 480px</td><td>Phones</td><td>Smaller font, tighter padding</td></tr>
+        <tr><td>print</td><td>Printer</td><td>Nav &amp; buttons hidden, white background</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight">Resize this window to &lt; 768px to see the layout switch to a single column!</div>
+
+    <h3>CSS Custom Properties (Variables)</h3>
+    <div class="note">
+      All colors are driven by <code>:root { --primary: #3498db; --secondary: #2ecc71; ... }</code>.
+      Click the button below to toggle a <strong>dark theme</strong> by swapping <code>data-theme</code>.
+    </div>
+    <button class="btn btn-primary"
+            onclick="document.body.setAttribute('data-theme', document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')">
+      Toggle Dark Theme
+    </button>
+  </section>
+
+</main>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer id="main-footer">
+  <p>&copy; 2026 Satyam Koranga – Experiment 2: CSS | Backend Development Lab | UPES</p>
+</footer>
+
+</body>
+</html>

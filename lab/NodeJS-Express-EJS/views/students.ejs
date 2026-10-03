@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/">← Home</a>
+  <strong>🎓 Students</strong>
+</nav>
+<div class="container">
+  <div class="card">
+    <h2>🎓 Student List – EJS Loop Demo</h2>
+    <p>Data is an array passed from Express: <code>res.render('students', { students, avg })</code></p>
+    <p>EJS iterates using <code>&lt;% students.forEach(s =&gt; &#123; %&gt;</code></p>
+
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Branch</th><th>Marks</th><th>Grade</th></tr>
+      </thead>
+      <tbody>
+        <% students.forEach(s => { %>
+        <tr>
+          <td><%= s.id %></td>
+          <td><strong><%= s.name %></strong></td>
+          <td><span class="badge"><%= s.branch %></span></td>
+          <td><%= s.marks %></td>
+          <td>
+            <% if (s.marks >= 90) { %>
+              <span class="badge green">A+</span>
+            <% } else if (s.marks >= 80) { %>
+              <span class="badge">A</span>
+            <% } else if (s.marks >= 70) { %>
+              <span class="badge purple">B</span>
+            <% } else { %>
+              <span class="badge red">C</span>
+            <% } %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3"><strong>Class Average</strong></td><td colspan="2"><strong><%= avg %></strong></td></tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<footer>&copy; 2026 Satyam Koranga – Exp 12</footer>
+</body>
+</html>

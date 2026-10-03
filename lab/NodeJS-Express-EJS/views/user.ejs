@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/">← Home</a>
+  <strong>👤 User Details</strong>
+</nav>
+<div class="container">
+  <div class="card">
+    <h1>👤 User Profile</h1>
+    <p>Route: <code>/user/<%= userId %></code> — demonstrates <strong>route parameters</strong> with <code>req.params.id</code></p>
+    <table>
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>ID</td><td><span class="badge"><%= user.id %></span></td></tr>
+        <tr><td>Name</td><td><%= user.name %></td></tr>
+        <tr><td>Email</td><td><%= user.email %></td></tr>
+        <tr><td>Course</td><td><%= user.course %></td></tr>
+        <tr><td>Enrolled</td><td><%= user.enrolled %></td></tr>
+      </tbody>
+    </table>
+    <p>Try other IDs: <a href="/user/1">/user/1</a> | <a href="/user/42">/user/42</a> | <a href="/user/100">/user/100</a></p>
+  </div>
+</div>
+<footer>&copy; 2026 Satyam Koranga – Exp 12</footer>
+</body>
+</html>
