@@ -1,43 +1,20 @@
-# 🚀 Backend Development Lab – UPES 2026
+
 
 **Student:** Satyam Koranga  
 **GitHub:** [@satyam-x-10](https://github.com/satyam-x-10)  
-**Email:** satyamkoranga42617@gmail.com  
-**Course:** Backend Development | UPES, Dehradun  
 **Reference:** [Course Lab Page](https://upessocs.github.io/#dir=/Lectures/Backend%20Development/Lab/&file=list.txt)
 
 ---
 
-## 📋 Quick Experiment Summary & Run Guide
 
-| # | Experiment | Category | How to Run | Screenshot |
-|---|-----------|----------|------------|:----------:|
-| **Exp 01** | [HTML5 Elements](#-exp-01--all-html5-elements) | Frontend HTML | Double click `Exp01-HTML5/index.html` | [View](#-output-screenshot) |
-| **Exp 02** | [CSS Types & Selectors](#-exp-02--cascading-style-sheets) | Frontend CSS | Double click `Exp02-CSS/index.html` | [View](#-output-screenshot-1) |
-| **Exp 03** | [Responsive Web Design](#-exp-03--responsive-web-page) | Frontend Responsive | Double click `Exp03-Responsive/index.html` | [View](#-output-screenshot-2) |
-| **Exp 12** | [Node.js, Express & EJS](#-exp-12--nodejs-npm-express-nodemon--ejs) | Backend Node.js | `cd Exp12-NodeJS-Express-EJS && npm run dev` | [View](#-output-screenshot-3) |
-| **Exp 13A** | [MongoDB Auth System](#-exp-13a--mongodb-mongoose--express-auth) | Backend Database | `cd Exp13A-MongoDB-Auth && npm run dev` | [View](#-output-screenshot-4) |
-| **Exp 14** | [PostgreSQL CRUD](#-exp-14--postgresql-optional) | Relational Database | Run SQL script inside `psql` | [View](#-output-terminal-results) |
-
-> ⚠️ **Important Note on Running Projects:**
-> - **Exp 01, Exp 02, Exp 03** are static HTML/CSS files — open them directly in your browser. (`npm` is not needed).
-> - **Exp 12 & Exp 13A** are Node.js/Express web applications — they require running `npm run dev`.
-> - **Exp 14** is a PostgreSQL SQL script — executed inside `psql` command line tool.
-
----
-
-## 🌐 Exp 01 – All HTML5 Elements
+ Exp 01 – All HTML5 Elements
 
 **Course Outcome:** CO2 – Create and build web pages and applications  
 **Short Summary:** Demonstrates the complete structure and semantic foundation of HTML5. Includes semantic layout containers (`header`, `nav`, `main`, `article`, `aside`, `footer`), 20+ form inputs with validation, native multimedia players (`audio`, `video`), HTML5 2D Canvas drawing, inline SVG, styled tables, and interactive UI tags (`details`, `dialog`, `template`).
+ 
 
-### 📸 Output Screenshot
-![Exp 01 HTML5 Output](screenshots/exp01_output.jpg)
 
-### 📁 Files
-- [`Exp01-HTML5/index.html`](Exp01-HTML5/index.html)
-
-### 🔑 Key Features
+### Key Features
 - **Semantic Structure:** Clear separation of content for SEO & screen reader accessibility.
 - **HTML5 Forms:** `color`, `date`, `range`, `datetime-local`, `datalist`, `progress`, `meter`.
 - **Media & Graphics:** Native `<audio>`, `<video>`, `<canvas>` 2D graphics API, `<svg>`.
@@ -45,19 +22,18 @@
 
 ---
 
-## 🎨 Exp 02 – Cascading Style Sheets
+## Exp 02 – Cascading Style Sheets
 
 **Course Outcome:** CO2 – Create and build web pages and applications  
 **Short Summary:** Explores all three types of CSS (Inline, Internal, and External) and their cascading priority order (`Inline > ID > Class > Element`). Covers CSS Box Model layout, Flexbox 1D flow, CSS Grid 2D layout, selector specificity, `@keyframes` animations, hover transitions, and CSS Custom Properties (`:root` variables) with a live Dark Theme toggle.
 
-### 📸 Output Screenshot
-![Exp 02 CSS Output](screenshots/exp02_output.jpg)
 
-### 📁 Files
+
+###  Files
 - [`Exp02-CSS/index.html`](Exp02-CSS/index.html) (Demonstrates Inline & Internal CSS)
 - [`Exp02-CSS/styles.css`](Exp02-CSS/styles.css) (External Stylesheet)
 
-### 🔑 Key Features
+### Key Features
 - **Cascading Hierarchy:** Proves priority resolution between Inline (1000), ID (100), Class (10), and Element (1).
 - **Box Model:** Visualized content, padding, border, and margin dimensions.
 - **Modern Layouts:** Flexbox item wrapping and multi-column CSS Grid spanning.
@@ -66,18 +42,16 @@
 
 ---
 
-## 📱 Exp 03 – Responsive Web Page
+ Exp 03 – Responsive Web Page
 
 **Course Outcome:** CO2 – Create and build web pages and applications  
 **Short Summary:** A multi-device responsive web page built from scratch using pure HTML5 and CSS3 with zero external frameworks. Implements mobile-first and desktop-first media queries (`≤480px`, `≤768px`, `≤1024px`), dynamic hamburger navigation toggle, fluid typography (`clamp()`), and responsive Flexbox and Grid component cards.
 
-### 📸 Output Screenshot
-![Exp 03 Responsive Output](screenshots/exp03_output.jpg)
 
-### 📁 Files
+###  Files
 - [`Exp03-Responsive/index.html`](Exp03-Responsive/index.html)
 
-### 🔑 Key Features
+### Key Features
 - **Viewport Control:** `<meta name="viewport" content="width=device-width, initial-scale=1.0">`.
 - **Fluid Layout:** Adapts seamlessly between 1440px desktop, 768px tablet, and 375px mobile phone.
 - **Interactive Hamburger Nav:** Pure CSS & lightweight JS toggle for mobile view.
@@ -85,15 +59,12 @@
 
 ---
 
-## 🟢 Exp 12 – Node.js, NPM, Express, Nodemon & EJS
+## Exp 12 – Node.js, NPM, Express, Nodemon & EJS
 
 **Course Outcome:** CO3 – Develop and implement backend systems  
 **Short Summary:** Implements a full server-side JavaScript web application with Express.js. Demonstrates diverse HTTP response types (`res.send`, `res.json`, `res.status`), URL route parameters (`/user/:id`), query strings (`/search`, `/calculate`), POST form processing with `urlencoded` middleware, and dynamic server-side template rendering using EJS (`views/*.ejs`).
 
-### 📸 Output Screenshot
-![Exp 12 Express Output](screenshots/exp12_output.jpg)
-
-### 📁 Files
+###  Files
 - [`Exp12-NodeJS-Express-EJS/app.js`](Exp12-NodeJS-Express-EJS/app.js)
 - [`Exp12-NodeJS-Express-EJS/package.json`](Exp12-NodeJS-Express-EJS/package.json)
 - [`Exp12-NodeJS-Express-EJS/public/style.css`](Exp12-NodeJS-Express-EJS/public/style.css)
@@ -109,19 +80,17 @@ Open **http://localhost:3000** in your browser.
 
 ---
 
-## 🍃 Exp 13A – MongoDB, Mongoose & Express Auth
+## Exp 13A – MongoDB, Mongoose & Express Auth
 
 **Course Outcome:** CO3 – Develop and implement backend systems  
 **Short Summary:** Builds a secure User Registration and Login Authentication System using Express.js and MongoDB (via Mongoose ODM). Implements industry-standard **bcrypt password hashing** (10 salt rounds), session-based authentication with `express-session`, protected dashboard routing, user deletion, and safe user data projection (excluding hashed passwords).
 
-### 📸 Output Screenshot
-![Exp 13A MongoDB Output](screenshots/exp13a_output.jpg)
 
-### 📁 Files
+### Files
 - [`Exp13A-MongoDB-Auth/server.js`](Exp13A-MongoDB-Auth/server.js)
 - [`Exp13A-MongoDB-Auth/package.json`](Exp13A-MongoDB-Auth/package.json)
 
-### ⚙️ How to Run
+###  How to Run
 ```bash
 # Ensure local MongoDB server is running (mongod)
 cd Exp13A-MongoDB-Auth
@@ -137,7 +106,7 @@ Open **http://localhost:4000** in your browser.
 **Course Outcome:** CO3 – Develop and implement backend systems  
 **Short Summary:** Demonstrates relational database fundamentals with PostgreSQL. Creates a structured `students` table with primary key constraints, data validation, and default timestamps. Executes comprehensive SQL CRUD operations, filtering (`WHERE branch='CSE'`), aggregations (`GROUP BY branch`, `AVG()`, `COUNT()`), conditional evaluation (`CASE` grading), indexing, and includes a detailed architectural comparison between PostgreSQL (Relational) and MongoDB (Document).
 
-### 🖥️ Output Terminal Results
+###  Output Terminal Results
 
 ```sql
 -- 1. All Students Query
@@ -163,10 +132,10 @@ SELECT branch, COUNT(*) AS total_students, ROUND(AVG(marks),2) AS avg_marks FROM
  MECH   |              1 |     79.00
 ```
 
-### 📁 Files
+### Files
 - [`Exp14-PostgreSQL/exp14_postgresql.sql`](Exp14-PostgreSQL/exp14_postgresql.sql)
 
-### 🔄 PostgreSQL vs MongoDB Comparison
+### PostgreSQL vs MongoDB Comparison
 
 | Aspect | PostgreSQL (Relational) | MongoDB (Document) |
 |--------|------------------------|--------------------|
@@ -179,17 +148,3 @@ SELECT branch, COUNT(*) AS total_students, ROUND(AVG(marks),2) AS avg_marks FROM
 
 ---
 
-## 🐙 How to Push to GitHub
-
-1. Create a repository on [GitHub](https://github.com/new) named `backend-development-lab`.
-2. Push your project from terminal:
-   ```powershell
-   cd C:\Users\91895\Desktop\backend-dev-lab
-   git remote add origin https://github.com/satyam-x-10/backend-development-lab.git
-   git push -u origin main
-   ```
-
----
-
-## 📝 License
-MIT – For educational purposes | UPES Backend Development Lab 2026
