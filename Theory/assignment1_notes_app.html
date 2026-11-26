@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App — Web Storage & JSON (Assignment 1)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --danger: #f87171;
+      --danger-hover: #ef4444;
+      --success: #34d399;
+      --border: #334155;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.2s, color 0.2s; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px; }
+    .container { max-width: 800px; margin: 0 auto; }
+    
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+
+    button { cursor: pointer; border: none; border-radius: 6px; padding: 8px 14px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { background: var(--border); }
+    .btn-danger { background: var(--danger); color: white; padding: 4px 8px; font-size: 12px; }
+    .btn-danger:hover { background: var(--danger-hover); }
+
+    .note-input-card { background: var(--card-bg); padding: 18px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px; }
+    input[type="text"], textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 10px; background: transparent; color: var(--text); font-size: 14px; }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .filter-group { display: flex; gap: 8px; align-items: center; }
+
+    .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .note-card { background: var(--card-bg); border-radius: 10px; padding: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .note-card.completed { opacity: 0.6; text-decoration: line-through; }
+    .note-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .tag-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--border); color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .note-body { font-size: 14px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .note-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); }
+    .note-actions { display: flex; gap: 6px; }
+
+    .empty-state { text-align: center; color: var(--text-muted); padding: 48px 16px; grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>📝 Notes App (Task 12)</h1>
+        <p style="font-size: 13px; color: var(--text-muted);">Web Storage API + JSON Persistence</p>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="btn-outline">🌙 Theme</button>
+        <button id="exportBtn" class="btn-outline">⬇️ Export</button>
+        <button id="importBtn" class="btn-outline">⬆️ Import</button>
+        <input type="file" id="importInput" accept=".json" style="display: none;">
+      </div>
+    </header>
+
+    <!-- Create / Edit Note Form -->
+    <div class="note-input-card">
+      <input type="text" id="noteTitle" placeholder="Title (e.g., Backend Exam Notes)...">
+      <textarea id="noteText" placeholder="Write your note content here..."></textarea>
+      <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+        <select id="noteCategory" style="max-width: 160px;">
+          <option value="General">General</option>
+          <option value="Theory">Theory</option>
+          <option value="Lab">Lab</option>
+          <option value="Important">Important</option>
+        </select>
+        <div style="display: flex; gap: 8px;">
+          <button id="cancelEditBtn" class="btn-outline" style="display: none;">Cancel</button>
+          <button id="saveNoteBtn" class="btn-primary">Add Note</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="controls-bar">
+      <div class="filter-group">
+        <input type="text" id="searchInput" placeholder="Search notes..." style="width: 200px;">
+        <select id="categoryFilter" style="width: 140px;">
+          <option value="All">All Tags</option>
+          <option value="General">General</option>
+          <option value="Theory">Theory</option>
+          <option value="Lab">Lab</option>
+          <option value="Important">Important</option>
+        </select>
+      </div>
+      <span id="noteCount" style="font-size: 13px; color: var(--text-muted);">0 notes</span>
+    </div>
+
+    <!-- Notes List -->
+    <div class="notes-grid" id="notesList"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "notes_app_data";
+    const THEME_KEY = "notes_app_theme";
+    let editingNoteId = null;
+
+    // Load theme preference from localStorage
+    function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(THEME_KEY, next);
+      document.getElementById('themeToggle').textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Helper functions for Web Storage
+    function getNotes() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }
+
+    function saveNotes(notes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    }
+
+    // Render notes with filter & search
+    function renderNotes() {
+      const notes = getNotes();
+      const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+      const filterCat = document.getElementById('categoryFilter').value;
+
+      const filtered = notes.filter(n => {
+        const matchesSearch = (n.title || '').toLowerCase().includes(searchQuery) || n.text.toLowerCase().includes(searchQuery);
+        const matchesCat = filterCat === 'All' || n.category === filterCat;
+        return matchesSearch && matchesCat;
+      });
+
+      const listEl = document.getElementById('notesList');
+      document.getElementById('noteCount').textContent = `${filtered.length} of ${notes.length} notes`;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="empty-state"><p>No notes found. Create your first note above!</p></div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(n => `
+        <div class="note-card ${n.completed ? 'completed' : ''}" data-id="${n.id}">
+          <div>
+            <div class="note-header">
+              <strong style="font-size: 15px;">${escapeHtml(n.title || 'Untitled')}</strong>
+              <span class="tag-badge">${n.category || 'General'}</span>
+            </div>
+            <p class="note-body" style="margin-top: 8px;">${escapeHtml(n.text)}</p>
+          </div>
+          <div class="note-footer">
+            <span>${new Date(n.updatedAt || n.createdAt).toLocaleDateString()}</span>
+            <div class="note-actions">
+              <button class="btn-outline" style="padding: 2px 6px; font-size: 11px;" onclick="toggleComplete(${n.id})">${n.completed ? '↩️' : '✅'}</button>
+              <button class="btn-outline" style="padding: 2px 6px; font-size: 11px;" onclick="startEdit(${n.id})">✏️</button>
+              <button class="btn-danger" onclick="deleteNote(${n.id})">🗑️</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Add or Update Note
+    document.getElementById('saveNoteBtn').addEventListener('click', () => {
+      const title = document.getElementById('noteTitle').value.trim();
+      const text = document.getElementById('noteText').value.trim();
+      const category = document.getElementById('noteCategory').value;
+
+      if (!text) {
+        alert('Please enter note text!');
+        return;
+      }
+
+      const notes = getNotes();
+
+      if (editingNoteId !== null) {
+        const note = notes.find(n => n.id === editingNoteId);
+        if (note) {
+          note.title = title;
+          note.text = text;
+          note.category = category;
+          note.updatedAt = new Date().toISOString();
+        }
+        editingNoteId = null;
+        document.getElementById('saveNoteBtn').textContent = 'Add Note';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+      } else {
+        notes.unshift({
+          id: Date.now(),
+          title: title,
+          text: text,
+          category: category,
+          completed: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: null
+        });
+      }
+
+      saveNotes(notes);
+      document.getElementById('noteTitle').value = '';
+      document.getElementById('noteText').value = '';
+      renderNotes();
+    });
+
+    // Delete Note
+    window.deleteNote = function(id) {
+      if (!confirm('Are you sure you want to delete this note?')) return;
+      let notes = getNotes();
+      notes = notes.filter(n => n.id !== id);
+      saveNotes(notes);
+      renderNotes();
+    };
+
+    // Toggle Complete
+    window.toggleComplete = function(id) {
+      const notes = getNotes();
+      const note = notes.find(n => n.id === id);
+      if (note) {
+        note.completed = !note.completed;
+        note.updatedAt = new Date().toISOString();
+        saveNotes(notes);
+        renderNotes();
+      }
+    };
+
+    // Start Edit
+    window.startEdit = function(id) {
+      const notes = getNotes();
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+
+      editingNoteId = id;
+      document.getElementById('noteTitle').value = note.title || '';
+      document.getElementById('noteText').value = note.text;
+      document.getElementById('noteCategory').value = note.category || 'General';
+      document.getElementById('saveNoteBtn').textContent = 'Update Note';
+      document.getElementById('cancelEditBtn').style.display = 'inline-block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      editingNoteId = null;
+      document.getElementById('noteTitle').value = '';
+      document.getElementById('noteText').value = '';
+      document.getElementById('saveNoteBtn').textContent = 'Add Note';
+      document.getElementById('cancelEditBtn').style.display = 'none';
+    });
+
+    // Search and filter listeners
+    document.getElementById('searchInput').addEventListener('input', renderNotes);
+    document.getElementById('categoryFilter').addEventListener('change', renderNotes);
+
+    // Export to JSON file
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const notes = getNotes();
+      const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `notes_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Import from JSON file
+    document.getElementById('importBtn').addEventListener('click', () => {
+      document.getElementById('importInput').click();
+    });
+
+    document.getElementById('importInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (Array.isArray(imported)) {
+            saveNotes(imported);
+            renderNotes();
+            alert(`Imported ${imported.length} notes successfully!`);
+          } else {
+            alert('Invalid format: JSON must be an array of note objects.');
+          }
+        } catch (err) {
+          alert('Error parsing JSON file: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Initial setup on page load
+    initTheme();
+    renderNotes();
+  </script>
+</body>
+</html>

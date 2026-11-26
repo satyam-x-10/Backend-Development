@@ -1,6 +1,8 @@
 # 🚀 Backend Development – UPES 2026
 
-**Author:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))
+**Author:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))  
+**SAP / Roll No:** 590017202  
+**Course:** Backend Development | UPES, Dehradun
 
 ---
 
@@ -26,7 +28,17 @@
 
 ---
 
-### 2. [`cms/`](cms/) — Blog Content Management System (Flask + MongoDB)
+### 2. [`Theory/`](Theory/) — Theory Assignments & Research
+
+Completed assignments as specified in the course curriculum:
+- **Assignment 1:** [Notes App using Web Storage & JSON](Theory/590017202_assignment1.md) — Persistent client-side Notes / Todo app with full CRUD, search, tags, dark mode, and JSON import/export ([Live App](Theory/assignment1_notes_app.html)).
+- **Assignment 2:** [PostgreSQL as SQL + NoSQL: Working with JSONB](Theory/590017202_assignment2.md) — Comprehensive Part A conceptual answers + Part B hands-on product catalog with GIN indexing and MongoDB comparisons ([SQL Script](Theory/assignment2_solution.sql)).
+
+👉 See [**`Theory/README.md`**](Theory/README.md) for full assignment details.
+
+---
+
+### 3. [`cms/`](cms/) — Blog Content Management System (Flask + MongoDB)
 
 A server-side rendered Blog CMS built with **Python Flask**, PyMongo, and Jinja2 templates.
 
