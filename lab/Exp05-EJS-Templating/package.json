@@ -1,0 +1,9 @@
+{
+  "name": "exp05-ejs-templating",
+  "version": "1.0.0",
+  "description": "Exp05 – EJS Templating Engine with Express",
+  "main": "app.js",
+  "scripts": { "start": "node app.js", "dev": "nodemon app.js" },
+  "dependencies": { "ejs": "^3.1.9", "express": "^4.18.2" },
+  "devDependencies": { "nodemon": "^3.0.1" }
+}

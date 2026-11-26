@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title><%= title %></title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <nav><a href="/">Home</a> <a href="/students">Students</a></nav>
+  <main>
+    <h1><%= student.name %></h1>
+    <table>
+      <tr><th>ID</th><td><%= student.id %></td></tr>
+      <tr><th>Branch</th><td><%= student.branch %></td></tr>
+      <tr><th>Marks</th><td><%= student.marks %></td></tr>
+      <tr><th>Grade</th><td><%= student.grade %></td></tr>
+    </table>
+    <a href="/students">← Back to list</a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title><%= title %></title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <nav><a href="/">Home</a> <a href="/students">Students</a></nav>
+  <main>
+    <h1>Add Student</h1>
+    <% if (message) { %><p class="success"><%= message %></p><% } %>
+    <form method="POST" action="/form">
+      <label>Name:<input type="text" name="name" required></label>
+      <label>Branch:<input type="text" name="branch" required></label>
+      <label>Marks (0-100):<input type="number" name="marks" min="0" max="100" required></label>
+      <button type="submit">Add Student</button>
+    </form>
+  </main>
+</body>
+</html>

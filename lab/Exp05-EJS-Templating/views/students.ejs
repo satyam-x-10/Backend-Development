@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title><%= title %></title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <nav><a href="/">Home</a> <a href="/students">Students</a> <a href="/form">Add</a></nav>
+  <main>
+    <h1>Student Records</h1>
+    <table>
+      <tr><th>ID</th><th>Name</th><th>Branch</th><th>Marks</th><th>Grade</th><th>Detail</th></tr>
+      <% students.forEach(s => { %>
+      <tr>
+        <td><%= s.id %></td>
+        <td><%= s.name %></td>
+        <td><%= s.branch %></td>
+        <td><%= s.marks %></td>
+        <td class="grade-<%= s.grade.replace('+','plus') %>"><%= s.grade %></td>
+        <td><a href="/student/<%= s.id %>">View</a></td>
+      </tr>
+      <% }) %>
+    </table>
+  </main>
+</body>
+</html>

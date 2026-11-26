@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    ports:
+      - "3009:3009"
+    environment:
+      - NODE_ENV=production
+      - PORT=3009
+      - DB_URI=mongodb://mongo:27017/lab
+      - JWT_SECRET=mySuperSecretKey2026
+      - ALLOWED_ORIGINS=http://localhost:3000
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

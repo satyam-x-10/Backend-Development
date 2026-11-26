@@ -1,31 +1,37 @@
- Backend Development
-
-Coursework and lab experiments for **Backend Development** at UPES, Dehradun (2026).
+# 🚀 Backend Development – UPES 2026
 
 **Author:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))
 
 ---
 
- Repository Structure
+## 📂 Repository Structure
 
-### 1. [`lab/`](lab/) — Backend Development Course Experiments
-Complete laboratory assignments with code, live outputs, and documentation:
-- **Exp 01:** [All HTML5 Elements](lab/#-exp-01--all-html5-elements)
-- **Exp 02:** [Cascading Style Sheets (CSS)](lab/#-exp-02--cascading-style-sheets)
-- **Exp 03:** [Responsive Web Design](lab/#-exp-03--responsive-web-page)
-- **Exp 12:** [Node.js, Express & EJS](lab/#-exp-12--nodejs-npm-express-nodemon--ejs)
-- **Exp 13A:** [MongoDB & Express Auth System](lab/#-exp-13a--mongodb-mongoose--express-auth)
-- **Exp 14:** [PostgreSQL Relational DB CRUD](lab/#-exp-14--postgresql-optional)
+### 1. [`lab/`](lab/) — Backend Development Lab Experiments
 
-See [**`lab/README.md`**](lab/README.md) for full experiment details and screenshots.
+| # | Experiment | Topics |
+|---|-----------|--------|
+| **01** | HTML5 Elements | Semantic HTML, Forms, Canvas, SVG |
+| **02** | CSS Types & Selectors | Inline/Internal/External, Flexbox, Grid |
+| **03** | Responsive Design | Media Queries, clamp(), Hamburger Nav |
+| **04** | Express Middleware | Logger, Auth Guard, Error Handler |
+| **05** | EJS Templating | SSR, Loops, Forms, Dynamic Routes |
+| **07+08** | REST API + JWT Auth | CRUD API, JWT Login, Protected Routes |
+| **09+10+11** | Security, Rate Limit & Deploy | helmet, cors, dotenv, Docker |
+| **12** | Node.js + Express + EJS | Routing, Params, POST, EJS Views |
+| **13A** | MongoDB Auth System | Mongoose, bcrypt, Sessions |
+| **14** | PostgreSQL CRUD | SQL DDL/DML, Aggregations, Indexing |
+| **15** | Real-time Chat (Socket.IO) | WebSockets, Broadcast, User Tracking |
+
+👉 See [**`lab/README.md`**](lab/README.md) for full details, run commands, and screenshots.
 
 ---
 
 ### 2. [`cms/`](cms/) — Blog Content Management System (Flask + MongoDB)
-Full-featured server-side rendered Blog CMS web app built with Python Flask, PyMongo, and Jinja2 templates:
-- **`GET /posts`:** Dynamic list of all blog posts with title, author, and date.
-- **`GET /posts/new` & `POST /posts`:** Create post form with server-side validation and MongoDB persistence.
-- **`GET /posts/<id>`:** View single post details queried via MongoDB `ObjectId`.
-- **Database:** MongoDB database `cms_lab` and collection `posts`.
 
-See [**`cms/README.md`**](cms/README.md) for screenshots, route documentation, and setup instructions.
+A server-side rendered Blog CMS built with **Python Flask**, PyMongo, and Jinja2 templates.
+
+- `GET /posts` – List all posts
+- `POST /posts` – Create a new post
+- `GET /posts/<id>` – View individual post
+
+👉 See [**`cms/README.md`**](cms/README.md) for screenshots and setup instructions.
