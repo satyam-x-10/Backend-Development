@@ -1,74 +1,47 @@
-# Exp 09, 10 & 11 – Environment Config, Security, Rate Limiting & Deployment (Combined)
+# Exp 09, 10 & 11 – Security, Rate Limiting and Deployment
 
-> These three experiments are implemented together as one production-ready Express server.
+This project brings together three production-oriented backend concepts into a single Express application.
 
 ## Summary
 
-| Exp | Topic | Implementation |
-|-----|-------|----------------|
-| **09** | Environment & Security | `dotenv`, `helmet` (11 security headers), `cors` with allowlist |
-| **10** | Rate Limiting | `express-rate-limit` – global (100/15min) + strict auth (5/15min) |
-| **11** | Deployment | `Dockerfile`, `docker-compose.yml`, `/health` endpoint |
+| Experiment | Area | Implementation |
+|---|---|---|
+| **Exp 09** | Configuration and Security | Environment loading via dotenv, Helmet security headers, CORS origin filtering |
+| **Exp 10** | Traffic Management | Request rate limiting with express-rate-limit (global and auth tiers) |
+| **Exp 11** | Containerized Deployment | Production Dockerfile, Docker Compose multi-container setup, `/health` endpoint |
 
-## Files
+## Directory Structure
 ```
 Exp09-11-Security-RateLimit-Deploy/
-├── server.js           ← Main Express server (Exp09+10+11 combined)
-├── package.json
-├── .env.example        ← Copy to .env before running
-├── Dockerfile          ← Docker image definition
-└── docker-compose.yml  ← Spins up API + MongoDB containers
+├── server.js           # Express application with security and rate-limiting rules
+├── package.json        # Dependencies and scripts
+├── .env.example        # Environment variable template
+├── Dockerfile          # Multi-stage production container image definition
+└── docker-compose.yml  # Compose file managing the API and MongoDB services
 ```
 
-## How to Run (Local)
+## Running Locally
 ```bash
 cd Exp09-11-Security-RateLimit-Deploy
 cp .env.example .env
 npm install
 npm run dev
 ```
-Server on **http://localhost:3009**
+The server will run on **http://localhost:3009**.
 
-## How to Run (Docker)
+## Running via Docker
 ```bash
-# Build and start both API and MongoDB containers
+# Build images and start all containers
 docker compose up --build
 
-# Stop containers
+# Stop active containers
 docker compose down
 ```
 
-## Endpoints
+## Route Endpoints
 | Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/` | Feature overview |
-| GET | `/health` | Health check (uptime, env, timestamp) |
-| GET | `/headers` | View applied security headers |
-| POST | `/auth/login` | Rate-limited login (max 5 attempts / 15 min) |
-
-## Expected Output
-
-**GET /health:**
-```json
-{
-  "status": "OK",
-  "env": "development",
-  "uptime": "42s",
-  "timestamp": "2026-11-26T04:00:00.000Z"
-}
-```
-
-**Too many requests (rate limit hit):**
-```json
-{ "error": "Too many requests – please wait 15 minutes and try again." }
-```
-
-**Security headers added by helmet (visible in browser DevTools → Network → Response Headers):**
-```
-Content-Security-Policy: ...
-X-DNS-Prefetch-Control: off
-X-Frame-Options: SAMEORIGIN
-X-Content-Type-Options: nosniff
-Referrer-Policy: no-referrer
-...
-```
+|---|---|---|
+| GET | `/` | Service overview and configured feature set |
+| GET | `/health` | Health check endpoint returning uptime and environment status |
+| GET | `/headers` | Returns active response headers applied by Helmet |
+| POST | `/auth/login` | Rate-limited login route (maximum 5 attempts per 15 minutes) |

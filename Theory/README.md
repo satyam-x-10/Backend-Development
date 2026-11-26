@@ -1,33 +1,33 @@
-# 📚 Backend Development Theory & Assignments
+# Backend Development Theory Coursework
 
-**Course:** Backend Development (Theory) | UPES, Dehradun  
 **Student:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))  
 **SAP / Roll No:** 590017202  
-**Source Syllabus:** [UPES SoCS Theory Lectures](https://upessocs.github.io/#d=/Lectures/Backend%20Development/Theory)
+**Institution:** UPES, Dehradun  
+**Course Reference:** [UPES SoCS Theory Lectures](https://upessocs.github.io/#d=/Lectures/Backend%20Development/Theory)
 
 ---
 
-## 📑 Completed Assignments
+## Completed Assignments
 
-### 1. [Assignment 1 — Notes App (Web Storage & JSON)](590017202_assignment1.md)
-- **Topic:** Unit 1 / L07 LocalStorage, SessionStorage & JSON — Task 12 Final Task.
-- **Description:** Complete client-side Notes / Todo application built using semantic HTML5, CSS custom properties, and vanilla JavaScript. Persists data permanently in `localStorage` with `JSON.stringify` and `JSON.parse`.
-- **Key Features:** Full CRUD (Create, Read, Edit, Delete), categorical filtering, keyword search, dark/light theme switcher, JSON file import/export.
+### 1. [Assignment 1 — Notes Application (Web Storage and JSON)](590017202_assignment1.md)
+- **Topic:** Unit 1 / L07 LocalStorage, SessionStorage and JSON — Final Task 12.
+- **Description:** A client-side notes application built using semantic HTML5, CSS custom properties, and vanilla JavaScript. Data is serialized and stored in browser `localStorage` using `JSON.stringify` and `JSON.parse`.
+- **Features:** Full record creation, editing, and deletion, keyword search filtering, category tags, dark and light theme switching, and JSON file backup export and import.
 - **Files:**
-  - 📄 Report: [`590017202_assignment1.md`](590017202_assignment1.md)
-  - 🌐 Live App: [`assignment1_notes_app.html`](assignment1_notes_app.html) (double-click to run in any browser)
+  - Written Report: [`590017202_assignment1.md`](590017202_assignment1.md)
+  - Application File: [`assignment1_notes_app.html`](assignment1_notes_app.html) (open directly in any browser)
 
 ---
 
-### 2. [Assignment 2 — PostgreSQL as SQL + NoSQL: Working with JSONB](590017202_assignment2.md)
-- **Topic:** Hybrid Relational & Document modeling with PostgreSQL `jsonb`.
-- **Description:** Comprehensive theoretical and practical analysis of storing semi-structured documents inside a relational engine. Covers storage differences (`json` vs `jsonb`), GIN inverted indexing, JSON path operators, schema-less updates, and an in-depth architectural comparison with MongoDB.
-- **Key Hands-on Tasks:**
-  - Dynamic `products` table schema combining fixed SQL columns + `attributes JSONB`.
-  - Heterogeneous product insertions across 3 categories (Books, Laptops, Accessories).
-  - Containment querying (`@>`), scalar extraction (`->`, `->>`), key checks (`?`).
-  - GIN indexing and `EXPLAIN ANALYZE` execution plan benchmarking.
-  - MongoDB `mongosh` equivalent queries and translation matrix.
+### 2. [Assignment 2 — PostgreSQL as SQL and NoSQL: Working with JSONB](590017202_assignment2.md)
+- **Topic:** Hybrid relational and document modeling using the PostgreSQL `jsonb` data type.
+- **Description:** Detailed theoretical and practical investigation of storing semi-structured documents within an ACID-compliant relational database. Covers binary decomposition formats, GIN indexing mechanics, JSON path extraction operators, schema-less in-place updates, and architectural comparison against MongoDB.
+- **Hands-on Implementation:**
+  - Dynamic `products` table schema containing both relational SQL columns and an `attributes JSONB` column.
+  - Multi-category product records (Books, Laptops, Accessories) with heterogeneous attribute structures.
+  - Category-specific attribute filtering, containment checks (`@>`), scalar extraction (`->`, `->>`), and key existence queries (`?`).
+  - Performance profiling using `EXPLAIN ANALYZE` before and after creating a GIN index.
+  - Equivalent MongoDB shell queries and feature comparison matrix.
 - **Files:**
-  - 📄 Report: [`590017202_assignment2.md`](590017202_assignment2.md) / [`Assignment 2 PostgreSQL as SQL + NoSQL.md`](Assignment%202%20PostgreSQL%20as%20SQL%20+%20NoSQL.md)
-  - 🗄️ SQL Script: [`assignment2_solution.sql`](assignment2_solution.sql)
+  - Written Report: [`590017202_assignment2.md`](590017202_assignment2.md) / [`Assignment 2 PostgreSQL as SQL + NoSQL.md`](Assignment%202%20PostgreSQL%20as%20SQL%20+%20NoSQL.md)
+  - Executable SQL Solution: [`assignment2_solution.sql`](assignment2_solution.sql)

@@ -1,31 +1,31 @@
- Blog Content Management System (CMS Lab)
+# Content Management System (CMS Laboratory Project)
 
-A server-side rendered Blog Content Management System built with **Python, Flask, PyMongo, and Jinja2 Templates** connected to a local **MongoDB** database instance.
+A server-side rendered blog content management application built with Python, Flask, PyMongo, and Jinja2 templates, storing records in a local MongoDB database.
 
 ---
 
-Output & Application Previews
+## Application Previews
 
-### 1. All Posts List (`GET /` & `GET /posts`)
-Displays all blog posts showing Title (clickable hyperlink), Author name, and creation date. The full content body is excluded from the query for optimized list performance.
+### 1. Posts Overview (`GET /` and `GET /posts`)
+Displays all saved blog posts including title, author name, and publication date. The post body content is excluded from the listing query projection for better performance.
 ![All Posts List](screenshots/01_cms_home_posts_list.png)
 
 ---
 
-### 2. Create New Post (`GET /posts/new` & `POST /posts`)
-Form to create a new post with Title, Author, and Content fields. Handles POST request validation, generates current date timestamps on the server, and saves into MongoDB.
+### 2. Create Post Form (`GET /posts/new` and `POST /posts`)
+Provides an input form for composing and submitting new articles. Validates required fields, appends a server-generated timestamp, and persists the document into MongoDB.
 ![Create New Post Form](screenshots/02_cms_create_new_post.png)
 
 ---
 
-### 3.  Individual Post Details (`GET /posts/<id>`) & VS Code Terminal
-Retrieves the full post document from MongoDB by its `ObjectId` and renders the complete content. Also displays the Flask server running in the VS Code terminal with active request logs.
+### 3. Individual Post View (`GET /posts/<id>`)
+Queries MongoDB using the unique BSON ObjectId and displays the full post content along with active server request logs in the terminal.
 ![Post Details and Terminal](screenshots/03_cms_post_detail_vscode.png)
 
 ---
 
-### 4. MongoDB Compass Database View (`cms_lab.posts`)
-Live MongoDB Compass view demonstrating data persistence in the `cms_lab` database under the `posts` collection.
+### 4. Database Collection View (`cms_lab.posts`)
+View from MongoDB Compass showing stored documents inside the `cms_lab` database under the `posts` collection.
 ![MongoDB Compass Collection](screenshots/04_cms_mongodb_compass.png)
 
 ---
@@ -34,59 +34,70 @@ Live MongoDB Compass view demonstrating data persistence in the `cms_lab` databa
 
 ```text
 cms/
-├── app.py                # Flask application with PyMongo routes
+├── app.py                # Flask application routes and PyMongo database queries
 ├── requirements.txt      # Python dependencies (Flask, pymongo)
-├── screenshots/          # Output screenshot images
+├── screenshots/          # Application preview captures
 │   ├── 01_cms_home_posts_list.png
 │   ├── 02_cms_create_new_post.png
 │   ├── 03_cms_post_detail_vscode.png
 │   └── 04_cms_mongodb_compass.png
 ├── static/
-│   └── style.css         # CSS styles
+│   └── style.css         # Stylesheet
 ├── templates/
-│   ├── posts.html        # List of all posts template
-│   ├── new-post.html     # Create new post form template
-│   └── post.html         # Single post detail view template
-└── README.md             # CMS documentation and output showcase
+│   ├── posts.html        # Post listing template
+│   ├── new-post.html     # Create post form template
+│   └── post.html         # Single post detail template
+└── README.md             # Project documentation
 ```
 
 ---
 
-## API Endpoints & Routes
+## Endpoints and Routes
 
-| Method | Route | Description | Template Rendered |
+| Method | Route | Description | Rendered Template |
 | :--- | :--- | :--- | :--- |
-| **GET** | `/` or `/posts` | Lists all blog posts (projection: `title`, `author`, `createdAt`) | `templates/posts.html` |
-| **GET** | `/posts/new` | Displays form to compose a new post | `templates/new-post.html` |
-| **POST** | `/posts` | Submits new post, inserts into MongoDB `cms_lab.posts`, redirects to `/posts` | Redirects to `/posts` |
-| **GET** | `/posts/<id>` | Queries post by `ObjectId(id)` and displays full content | `templates/post.html` |
+| **GET** | `/` or `/posts` | Lists all posts with projected fields (title, author, createdAt) | `templates/posts.html` |
+| **GET** | `/posts/new` | Renders the new post submission form | `templates/new-post.html` |
+| **POST** | `/posts` | Validates input, writes to `cms_lab.posts`, and redirects to listing | Redirects to `/posts` |
+| **GET** | `/posts/<id>` | Retrieves a specific document by its ObjectId | `templates/post.html` |
 
 ---
 
-##  MongoDB Schema (Collection: `posts`)
+## Document Schema (Collection: `posts`)
 
 ```json
 {
-  "_id": ObjectId("6abbd407a51eba88c2df0bcb"),
-  "title": "2nd Blog",
-  "author": "sahil",
-  "content": "this is my second blog",
-  "createdAt": "29 September 2026"
+  "_id": "6abbd407a51eba88c2df0bcb",
+  "title": "Sample Blog Title",
+  "author": "Satyam",
+  "content": "Detailed post content goes here.",
+  "createdAt": "26 November 2026"
 }
 ```
 
 ---
 
+## Setup and Execution
+
+### 1. Prerequisites
+- Python 3.8 or higher installed.
+- MongoDB daemon running locally on port 27017.
+
+### 2. Install Dependencies and Launch Server
+```bash
+cd lab/cms
+pip install -r requirements.txt
+python app.py
+```
 
 ### 3. Open in Browser
-- **Home / Post List:** [http://127.0.0.1:5000/posts](http://127.0.0.1:5000/posts)
-- **Create Post Form:** [http://127.0.0.1:5000/posts/new](http://127.0.0.1:5000/posts/new)
+- Post Overview: [http://127.0.0.1:5000/posts](http://127.0.0.1:5000/posts)
+- Create Post Form: [http://127.0.0.1:5000/posts/new](http://127.0.0.1:5000/posts/new)
 
 ---
 
-## Features Checklist
-
--  **MongoDB Connectivity:** Uses `pymongo.MongoClient` with fallback support.
--  **Server-Side Rendering (SSR):** Jinja2 template inheritance.
--  **BSON ObjectId Querying:** Queries individual documents safely using `bson.objectid.ObjectId`.
--  **Date Formatting:** Automatically attaches formatted timestamps (`%d %B %Y`) to posts.
+## Features
+- Direct database connectivity using `pymongo.MongoClient` with fallback handling.
+- Server-side rendering using Jinja2 template inheritance.
+- Safe resource querying via BSON `ObjectId` parsing.
+- Server-generated timestamps on document insertion.

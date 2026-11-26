@@ -1,25 +1,24 @@
 # Exp 15 – Real-time Chat with Socket.IO
 
 ## Summary
-A fully functional **real-time group chat application** using `socket.io` and Express. Demonstrates WebSocket-based bidirectional communication, user sessions, online user list, system notifications (join/leave), and a styled dark-themed chat UI.
+A functional group chat application demonstrating full-duplex, event-driven communication using Socket.IO and Express. The project covers client connection lifecycles, real-time message broadcasting, room-less public discussions, and active user presence tracking.
 
-## Concepts Covered
-| Concept | Implementation |
+## Technical Concepts
+| Concept | Implementation Details |
 |---|---|
-| WebSocket via Socket.IO | `io.on('connection', ...)` |
-| Broadcast to all clients | `io.emit('message', payload)` |
-| Broadcast except sender | `socket.broadcast.emit(...)` |
-| Room-less group chat | All sockets share one namespace |
-| Online user tracking | `users` object keyed by `socket.id` |
-| Disconnect cleanup | `socket.on('disconnect', ...)` |
+| WebSocket Connection | Managed through `io.on('connection', socket => ...)` |
+| Broadcast to All | Emitted using `io.emit('message', payload)` |
+| Broadcast to Others | Emitted using `socket.broadcast.emit(...)` |
+| Client State | Tracked via an in-memory `users` dictionary indexed by `socket.id` |
+| Disconnect Cleanup | Triggered on socket disconnection to notify peers and update the user list |
 
-## Files
+## Directory Structure
 ```
 Exp15-Realtime-Chat-SocketIO/
-├── server.js           ← Socket.IO + Express server
-├── package.json
+├── server.js           # Express and Socket.IO server implementation
+├── package.json        # Dependencies
 └── public/
-    └── index.html      ← Full chat UI (HTML + CSS + Socket.IO client)
+    └── index.html      # Responsive chat interface with Socket.IO client library
 ```
 
 ## How to Run
@@ -28,14 +27,4 @@ cd Exp15-Realtime-Chat-SocketIO
 npm install
 npm run dev
 ```
-Open **http://localhost:3015** in **two or more browser tabs** to see real-time messaging!
-
-## How Socket.IO Works
-```
-Client A                Server               Client B
-   |──── join("Satyam") ──►|                     |
-   |                       |──── system msg ─────►|
-   |──── message("Hello") ─►|                     |
-   |                       |──── message ─────────►|
-   |◄──────────────────────|──── message           |
-```
+Open **http://localhost:3015** in two or more browser windows to test real-time chat communication.

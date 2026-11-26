@@ -1,42 +1,44 @@
 # Exp 04 – Express Middleware
 
 ## Summary
-Demonstrates the full Express middleware pipeline: **custom logger**, **body parser**, **static file serving**, **route-level auth guard**, **404 handler**, and **central error handler**.
+Demonstrates how request-processing pipelines function in Express.js. This experiment implements a request logger, built-in body parsers, static asset delivery, a custom header-based authentication guard, a 404 route handler, and a centralized error handling middleware.
 
-## Concepts Covered
-| Middleware Type | Purpose |
-|---|---|
-| Logger | Logs method + URL + timestamp for every request |
-| `express.json()` | Parses JSON request bodies |
-| `express.urlencoded()` | Parses HTML form POST bodies |
-| `express.static()` | Serves files from `public/` folder |
-| Auth Guard | Checks `x-auth-token` header before protected routes |
-| 404 Handler | Catches unmatched routes |
-| Error Handler | 4-param `(err,req,res,next)` catches all thrown errors |
+## Middleware Reference
+| Middleware Type | Implementation | Description |
+|---|---|---|
+| Logger | Custom function | Logs request method, URL, and timestamp |
+| Body Parser | `express.json()` | Parses incoming JSON payloads |
+| Form Parser | `express.urlencoded()` | Decodes URL-encoded HTML form bodies |
+| Static Server | `express.static()` | Serves public client assets |
+| Auth Guard | Route-level handler | Validates presence of `x-auth-token` header |
+| Route Fallback | 404 Handler | Catches unmatched endpoints |
+| Error Handler | 4-parameter function | Catches runtime errors passed via `next(err)` |
 
-## Files
-- [`app.js`](app.js) – All middleware + routes in one file
-- [`package.json`](package.json) – Dependencies
+## Source Files
+- [`app.js`](app.js): Application setup, middleware declarations, and routes
+- [`package.json`](package.json): Dependencies and start scripts
 
 ## How to Run
 ```bash
 cd Exp04-Middleware
 npm install
-npm run dev
+node app.js
 ```
-Server starts on **http://localhost:3004**
+The server will start on **http://localhost:3004**.
 
-## Test the Routes
+## Testing Endpoints
 ```bash
-# Public route (no token needed)
+# Public endpoint (no token required)
 curl http://localhost:3004/public-data
 
-# Protected route – without token (401)
+# Protected endpoint without token (returns 401 Unauthorized)
 curl http://localhost:3004/private-data
 
-# Protected route – with token (200)
+# Protected endpoint with valid token (returns 200 OK)
 curl -H "x-auth-token: secret123" http://localhost:3004/private-data
 
-# POST echo
-curl -X POST http://localhost:3004/echo -H "Content-Type: application/json" -d "{\"name\":\"Satyam\"}"
+# POST endpoint with JSON body
+curl -X POST http://localhost:3004/echo \
+  -H "Content-Type: application/json" \
+  -d "{\"name\":\"Satyam\"}"
 ```

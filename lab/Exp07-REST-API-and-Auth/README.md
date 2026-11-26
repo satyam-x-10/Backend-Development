@@ -1,34 +1,34 @@
-# Exp 07 & 08 – RESTful API + JWT Authentication (Combined)
+# Exp 07 & 08 – RESTful API and JWT Authentication
 
-> **Note:** These two experiments are implemented together in one Express server.
+This experiment combines a complete RESTful CRUD API with JSON Web Token (JWT) based authentication in a unified Express service.
 
 ## Summary
-- **Exp 07:** Builds a full RESTful CRUD API for a `Books` resource with filtering by query string.
-- **Exp 08:** Adds JWT (JSON Web Token) based login and protected routes using Bearer token authentication.
+- **Exp 07:** Implements a standard CRUD interface for a books catalog resource supporting filtering via query parameters.
+- **Exp 08:** Adds user authentication using password hashing with bcrypt, JWT generation upon login, and route guards that verify `Authorization: Bearer <token>` headers.
 
-## API Routes
+## API Endpoints
 
-### Auth (Exp 08)
-| Method | Route | Auth | Description |
-|--------|-------|------|-------------|
-| POST | `/auth/login` | Public | Login with username & password, receive JWT token |
-| GET | `/auth/me` | 🔒 Protected | View logged-in user info from token |
+### Authentication Routes (Exp 08)
+| Method | Route | Access | Description |
+|---|---|---|---|
+| POST | `/auth/login` | Public | Submits credentials and returns a signed JWT |
+| GET | `/auth/me` | Protected | Returns the decoded token payload for the current user |
 
-### Books CRUD (Exp 07)
-| Method | Route | Auth | Description |
-|--------|-------|------|-------------|
-| GET | `/api/books` | Public | List all books (supports `?genre=Tech&author=Martin`) |
-| GET | `/api/books/:id` | Public | Get single book by ID |
-| POST | `/api/books` | 🔒 Protected | Create new book |
-| PUT | `/api/books/:id` | 🔒 Protected | Update existing book |
-| DELETE | `/api/books/:id` | 🔒 Protected | Delete a book |
+### Books CRUD Routes (Exp 07)
+| Method | Route | Access | Description |
+|---|---|---|---|
+| GET | `/api/books` | Public | Lists all books; supports `?genre=` and `?author=` query filters |
+| GET | `/api/books/:id` | Public | Retrieves a specific book record by its numeric identifier |
+| POST | `/api/books` | Protected | Adds a new book record |
+| PUT | `/api/books/:id` | Protected | Modifies attributes of an existing book record |
+| DELETE | `/api/books/:id` | Protected | Deletes a book record |
 
-## Files
+## Source Files
 ```
 Exp07-REST-API-and-Auth/
-├── server.js        ← Combined REST API + JWT Auth
-├── package.json
-└── .env.example     ← Copy to .env before running
+├── server.js        # Server logic, routes, and auth middleware
+├── package.json     # Project configuration and dependencies
+└── .env.example     # Template for environment variables
 ```
 
 ## How to Run
@@ -38,52 +38,29 @@ cp .env.example .env
 npm install
 npm run dev
 ```
-Server on **http://localhost:3007**
+The server will start on **http://localhost:3007**.
 
-## Test with curl
+## Testing Endpoints with curl
 
 ```bash
-# 1. Login and get token
+# 1. Log in to retrieve a signed token
 curl -X POST http://localhost:3007/auth/login \
   -H "Content-Type: application/json" \
   -d "{\"username\":\"satyam\",\"password\":\"password123\"}"
 
-# 2. Use the token for protected routes
-curl -H "Authorization: Bearer <YOUR_TOKEN>" http://localhost:3007/auth/me
+# 2. Access the protected profile route using the token
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:3007/auth/me
 
-# 3. Get all books (public)
+# 3. Retrieve the full book list (public)
 curl http://localhost:3007/api/books
 
-# 4. Create a book (protected)
+# 4. Create a new book record (protected)
 curl -X POST http://localhost:3007/api/books \
-  -H "Authorization: Bearer <YOUR_TOKEN>" \
+  -H "Authorization: Bearer <TOKEN>" \
   -H "Content-Type: application/json" \
-  -d "{\"title\":\"Node.js Design Patterns\",\"author\":\"Casciaro\",\"genre\":\"Tech\",\"year\":2020}"
+  -d "{\"title\":\"Node.js Design Patterns\",\"author\":\"Mario Casciaro\",\"genre\":\"Tech\",\"year\":2020}"
 
-# 5. Delete a book (protected)
+# 5. Delete a book record (protected)
 curl -X DELETE http://localhost:3007/api/books/1 \
-  -H "Authorization: Bearer <YOUR_TOKEN>"
-```
-
-## Expected Output
-
-**Login response:**
-```json
-{
-  "message": "Login successful",
-  "token": "eyJhbGci...",
-  "expiresIn": "1h"
-}
-```
-
-**GET /api/books:**
-```json
-{
-  "count": 3,
-  "books": [
-    { "id": 1, "title": "The Pragmatic Programmer", "author": "Hunt & Thomas", "genre": "Tech", "year": 1999 },
-    { "id": 2, "title": "Clean Code", "author": "Robert Martin", "genre": "Tech", "year": 2008 },
-    { "id": 3, "title": "You Don't Know JS", "author": "Kyle Simpson", "genre": "Tech", "year": 2015 }
-  ]
-}
+  -H "Authorization: Bearer <TOKEN>"
 ```

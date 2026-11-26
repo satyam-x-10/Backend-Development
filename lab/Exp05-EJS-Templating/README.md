@@ -1,30 +1,29 @@
 # Exp 05 – EJS Templating Engine
 
 ## Summary
-Demonstrates **server-side rendering (SSR)** using EJS (Embedded JavaScript) with Express. Covers loops (`<% %>` tags), conditionals, form handling, and dynamic data injection into HTML templates.
+Demonstrates server-side rendering (SSR) using the Embedded JavaScript (EJS) templating engine with Express. The application passes backend data to views, iterates through records, renders conditional elements, processes form data, and serves static styles.
 
-## Concepts Covered
-| Feature | Implementation |
-|---|---|
-| `<%= %>` | Output escaped variable value |
-| `<% %>` | Execute JS logic (loops, conditions) |
-| `res.render()` | Render EJS template with data |
-| Form POST | Add student via HTML form → server |
-| Dynamic routing | `/student/:id` renders per-student detail |
+## Syntax Reference
+| Tag Syntax | Behavior | Usage |
+|---|---|---|
+| `<%= value %>` | Escapes and prints output | Displaying strings safely without XSS risk |
+| `<% code %>` | Executes JavaScript | Evaluating loops (`forEach`) and `if/else` checks |
+| `<%- html %>` | Prints raw unescaped output | Rendering formatted HTML snippets |
+| `res.render()` | Invokes view engine | Compiling templates with contextual data objects |
 
-## Files
+## Directory Structure
 ```
 Exp05-EJS-Templating/
-├── app.js              ← Express + EJS server
-├── package.json
+├── app.js              # Express routing and data definitions
+├── package.json        # Dependencies and execution commands
 ├── public/
-│   └── style.css
+│   └── style.css       # Static CSS stylesheet
 └── views/
-    ├── index.ejs       ← Home page
-    ├── students.ejs    ← Loop over all students
-    ├── student-detail.ejs ← Single student view
-    ├── form.ejs        ← Add student form
-    └── 404.ejs         ← Error page
+    ├── index.ejs       # Home view
+    ├── students.ejs    # Student table view with loop iteration
+    ├── student-detail.ejs # Single record view
+    ├── form.ejs        # Add student submission form
+    └── 404.ejs         # Custom 404 error page
 ```
 
 ## How to Run
@@ -33,4 +32,4 @@ cd Exp05-EJS-Templating
 npm install
 npm run dev
 ```
-Open **http://localhost:3005**
+Open **http://localhost:3005** in your browser.
