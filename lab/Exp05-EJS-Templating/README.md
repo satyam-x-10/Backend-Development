@@ -33,3 +33,11 @@ npm install
 npm run dev
 ```
 Open **http://localhost:3005** in your browser.
+
+## output preview
+<img width="1586" height="1023" alt="Screenshot 2026-11-27 220916" src="https://github.com/user-attachments/assets/4190f2e5-8570-4b6b-818d-479605885095" />
+<img width="1570" height="990" alt="Screenshot 2026-11-27 220939" src="https://github.com/user-attachments/assets/47fc54cd-360c-4ff8-a77f-5f068f18bae7" />
+<img width="1550" height="950" alt="Screenshot 2026-11-27 221004" src="https://github.com/user-attachments/assets/9ab27d20-a20c-48ff-9149-9cef4d5db333" />
+
+
+
