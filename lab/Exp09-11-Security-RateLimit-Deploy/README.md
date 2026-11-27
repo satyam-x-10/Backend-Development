@@ -39,20 +39,20 @@ docker compose down
 ```
 ## Output Preview
 ## VIA DOCKER 
-<img width="1471" height="215" alt="Screenshot 2026-11-27 225429" src="https://github.com/user-attachments/assets/6c939e62-3fe6-4e01-874e-5c01421a0dbe" />
+![Output 1](./screenshots/1.png)
 ## exp 9 
-<img width="1677" height="841" alt="Screenshot 2026-11-27 225415" src="https://github.com/user-attachments/assets/35eec4f3-12b7-4ae8-a5c9-2185216ee2e2" />
-<img width="886" height="982" alt="Screenshot 2026-11-27 224935" src="https://github.com/user-attachments/assets/caffc874-7768-40fc-b56f-54a87186a83c" />
+![Output 2](./screenshots/2.png)
+![Output 3](./screenshots/3.png)
 
 ## exp 10
-<img width="1517" height="973" alt="Screenshot 2026-11-27 231525" src="https://github.com/user-attachments/assets/c4132f99-96c5-41c3-a083-0e723a038fa5" />
-<img width="1742" height="990" alt="Screenshot 2026-11-27 231539" src="https://github.com/user-attachments/assets/ee170873-db95-496c-8943-db2520ef886e" />
-<img width="1592" height="965" alt="Screenshot 2026-11-27 231553" src="https://github.com/user-attachments/assets/f4615a9d-697d-4c39-b096-74efcda495a1" />
+![Output 4](./screenshots/4.png)
+![Output 5](./screenshots/5.png)
+![Output 6](./screenshots/6.png)
 
 ## exp 11
-<img width="1207" height="802" alt="Screenshot 2026-11-27 230522" src="https://github.com/user-attachments/assets/1070d952-6024-498e-9870-8d6ca43718ae" />
-<img width="1462" height="825" alt="Screenshot 2026-11-27 231844" src="https://github.com/user-attachments/assets/298b20f7-88c4-4d14-8a44-4f7bf477c87d" />
-<img width="1347" height="945" alt="Screenshot 2026-11-27 231953" src="https://github.com/user-attachments/assets/f0f10ea5-b6f1-4e7d-bb56-ab2877ec66ce" />
+![Output 7](./screenshots/7.png)
+![Output 8](./screenshots/8.png)
+![Output 9](./screenshots/9.png)
 
 
 

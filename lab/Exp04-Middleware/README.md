@@ -27,9 +27,9 @@ node app.js
 The server will start on **http://localhost:3004**.
 ## output preview :
 
-<img width="1500" height="1020" alt="Screenshot 2026-11-27 215428" src="https://github.com/user-attachments/assets/756ef773-43db-4653-b3f8-d5603ab3c647" />
-<img width="1476" height="1017" alt="Screenshot 2026-11-27 215441" src="https://github.com/user-attachments/assets/16ce522d-abae-4cb9-a667-26522c70f9f8" />
-<img width="1442" height="968" alt="Screenshot 2026-11-27 215453" src="https://github.com/user-attachments/assets/fa3bfc3e-ef61-4a61-82da-e5460541e7a2" />
+![Output 1](./screenshots/1.png)
+![Output 2](./screenshots/2.png)
+![Output 3](./screenshots/3.png)
 
 ## Testing Endpoints
 ```bash

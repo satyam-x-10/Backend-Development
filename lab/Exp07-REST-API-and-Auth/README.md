@@ -15,9 +15,9 @@ This experiment combines a complete RESTful CRUD API with JSON Web Token (JWT) b
 | GET | `/auth/me` | Protected | Returns the decoded token payload for the current user |
 
 ## output preview for exp 08 
-<img width="1481" height="976" alt="Screenshot 2026-11-27 221428" src="https://github.com/user-attachments/assets/edf69aad-a642-454b-84ab-f8a626daeaea" /> 
-<img width="1442" height="292" alt="Screenshot 2026-11-27 224320" src="https://github.com/user-attachments/assets/a739f554-f8a5-4f4a-bd44-e089c3747b53" />
-<img width="1445" height="487" alt="Screenshot 2026-11-27 224417" src="https://github.com/user-attachments/assets/ce1bb4ea-3280-4df6-89b2-75b60df10373" />
+![Output 1](./screenshots/1.png)
+![Output 2](./screenshots/2.png)
+![Output 3](./screenshots/3.png)
 
 
 
@@ -32,9 +32,9 @@ This experiment combines a complete RESTful CRUD API with JSON Web Token (JWT) b
 
 
 ## output preview for exp 07
-<img width="1481" height="976" alt="Screenshot 2026-11-27 221428" src="https://github.com/user-attachments/assets/edf69aad-a642-454b-84ab-f8a626daeaea" />
-<img width="890" height="977" alt="Screenshot 2026-11-27 221852" src="https://github.com/user-attachments/assets/3f13a6e5-8d4a-4ca2-b3bf-496f6764d746" />
-<img width="912" height="981" alt="Screenshot 2026-11-27 221907" src="https://github.com/user-attachments/assets/bdc2031f-3ecd-4178-ab79-15430d39fa88" />
+![Output 4](./screenshots/4.png)
+![Output 5](./screenshots/5.png)
+![Output 6](./screenshots/6.png)
 
 
 
