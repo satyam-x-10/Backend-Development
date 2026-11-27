@@ -1,7 +1,7 @@
 # Backend Development – UPES 2026
 
 **Author:** Satyam Koranga ([@satyam-x-10](https://github.com/satyam-x-10))  
-**SAP / Roll No:** 590017202  
+**SAP ID** 590017202  
 **Course:** Backend Development | UPES, Dehradun
 
 ---
