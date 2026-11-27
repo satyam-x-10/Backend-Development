@@ -60,3 +60,18 @@ A server-side rendered blog management application built using Python, Flask, Py
 - `GET /posts/<id>`: Detailed view querying documents via BSON ObjectId.
 
 Open the [CMS Project Page](lab/cms/) for route tables, schema design, output captures, and setup steps.
+### 4. PBL TASK 
+     PBL Assignment - DockerAPI (Containerized FastAPI Service)
+
+A containerized Student Management API built with FastAPI, tested automatically with pytest, and deployed through a GitHub Actions CI/CD pipeline to Docker Hub.
+
+- **Repository:** [satyam-x-10/DockerAPI](https://github.com/satyam-x-10/DockerAPI)
+- **Docker Hub Image:** [satyamm10/fastapi-app](https://hub.docker.com/r/satyamm10/fastapi-app)
+- **Live Hosted URL:** [Student Management API](https://dockerapi-satyam.onrender.com/)
+
+### What Was Implemented
+
+- **FastAPI Application (`main.py`):** Stateless Student Management API with `/`, `/health`, and full CRUD routes under `/students`, plus structured request logging middleware.
+- **Automated Route Testing (`automationTesting.py`):** Verifies all endpoints and error responses using FastAPI `TestClient` and `pytest`.
+- **Containerization (`Dockerfile` & `docker-compose.yml`):** Packages the service on `python:3.12-slim` with a `/health` check and single-command local orchestration.
+- **CI/CD Pipeline (`.github/workflows/ActionsYaml.yaml`):** Runs `automationTesting.py` on every push and pull request to `main`, then builds and pushes the Docker image to Docker Hub once tests pass.
