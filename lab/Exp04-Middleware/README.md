@@ -25,6 +25,8 @@ npm install
 node app.js
 ```
 The server will start on **http://localhost:3004**.
+## output preview :
+<img width="1500" height="1020" alt="Screenshot 2026-11-27 215428" src="https://github.com/user-attachments/assets/756ef773-43db-4653-b3f8-d5603ab3c647" />
 
 ## Testing Endpoints
 ```bash
