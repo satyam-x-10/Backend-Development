@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 2 - PostgreSQL JSONB SQL Solution</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1000px; margin: 28px auto; padding: 0 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-bottom: 12px; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px; overflow-x: auto; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Assignment 2 SQL Viewer</div>
+    <div>
+      <a href="../">Home</a>
+      <a href="./">Theory Index</a>
+      <a href="590017202_assignment2.html">Written Report</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <h1>Assignment 2: PostgreSQL JSONB SQL Solution</h1>
+      <p>Complete executable SQL script covering Tasks 1 through 6 (Schema, Heterogeneous Inserts, Operators, Updates, and GIN Index Analysis).</p>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('sqlCode').textContent)">Copy SQL</button>
+      <pre id="sqlCode">-- Assignment 2: PostgreSQL as SQL + NoSQL: Working with JSONB
+-- Student: Satyam Koranga (SAP: 590017202)
+
+DROP TABLE IF EXISTS products CASCADE;
+
+CREATE TABLE products (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    attributes JSONB
+);
+
+INSERT INTO products (name, category, price, attributes) VALUES
+('Clean Code', 'book', 499.00,
+ '{"author": "Robert C. Martin", "pages": 464, "publisher": "Prentice Hall", "hardcover": false}'),
+('Designing Data-Intensive Applications', 'book', 899.00,
+ '{"author": "Martin Kleppmann", "pages": 616, "publisher": "O''Reilly", "hardcover": true}'),
+('MacBook Pro 16', 'laptop', 2499.00,
+ '{"cpu": "Apple M3 Max", "ram_gb": 36, "storage_tb": 1, "battery_hours": 22}'),
+('ThinkPad X1 Carbon', 'laptop', 1749.00,
+ '{"cpu": "Intel Core Ultra 7", "ram_gb": 16, "storage_tb": 1, "battery_hours": 15}'),
+('Logitech MX Master 3S', 'accessory', 99.99,
+ '{"color": "Graphite", "wireless": true, "dpi": 8000, "connectivity": "Bluetooth"}');
+
+-- Category-specific attribute filtering
+SELECT name, price, attributes ->> 'author' AS author, (attributes ->> 'pages')::INT AS pages
+FROM products WHERE category = 'book' AND (attributes ->> 'pages')::INT > 500;
+
+SELECT name, price, attributes ->> 'cpu' AS processor, (attributes ->> 'ram_gb')::INT AS ram
+FROM products WHERE category = 'laptop' AND (attributes ->> 'ram_gb')::INT >= 32;
+
+SELECT name, price, attributes ->> 'color' AS color, (attributes ->> 'dpi')::INT AS dpi
+FROM products WHERE category = 'accessory' AND (attributes ->> 'dpi')::INT >= 4000;
+
+-- Containment query (@>)
+SELECT id, name, category, price, attributes
+FROM products WHERE attributes @> '{"wireless": true}';
+
+-- Dynamic JSONB update without ALTER TABLE
+UPDATE products
+SET attributes = attributes || '{"discount_pct": 15, "in_stock": true}'::JSONB
+WHERE name = 'Logitech MX Master 3S';
+
+-- GIN Index and Execution Plan comparison
+EXPLAIN ANALYZE SELECT name FROM products WHERE attributes @> '{"wireless": true}';
+CREATE INDEX idx_products_attributes ON products USING GIN (attributes);
+EXPLAIN ANALYZE SELECT name FROM products WHERE attributes @> '{"wireless": true}';</pre>
+    </div>
+  </div>
+</body>
+</html>

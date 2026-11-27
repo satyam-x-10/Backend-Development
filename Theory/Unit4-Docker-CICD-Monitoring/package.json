@@ -1,0 +1,13 @@
+{
+  "name": "unit4-docker-cicd-monitoring",
+  "version": "1.0.0",
+  "description": "Unit 4 - Containerization, CI/CD Automated Testing and Health Monitoring",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test server.test.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

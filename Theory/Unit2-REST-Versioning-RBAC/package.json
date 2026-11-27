@@ -1,0 +1,12 @@
+{
+  "name": "unit2-rest-versioning-rbac",
+  "version": "1.0.0",
+  "description": "Unit 2 - REST API Versioning (v1/v2) and Role-Based Access Control",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

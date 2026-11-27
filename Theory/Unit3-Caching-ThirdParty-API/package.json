@@ -1,0 +1,12 @@
+{
+  "name": "unit3-caching-thirdparty-api",
+  "version": "1.0.0",
+  "description": "Unit 3 - Express Third-Party API Integration and TTL Caching",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

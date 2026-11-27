@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2 - REST API Versioning and RBAC</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1050px; margin: 28px auto; padding: 0 20px; }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    .card h2 { font-size: 17px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+    select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; min-width: 220px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    button.secondary { background: #6e7781; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; margin-top: 10px; }
+    .unit-nav { display: flex; justify-content: space-between; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .unit-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Unit 2 REST & RBAC</div>
+    <div>
+      <a href="../../">Home</a>
+      <a href="../">Theory Index</a>
+      <a href="../Unit2-SQL-Schema-Optimization/demo.html">Prev: Unit 2 SQL</a>
+      <a href="./">Unit 2 REST Docs</a>
+      <a href="../Unit3-Caching-ThirdParty-API/demo.html">Next: Unit 3 Caching</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Unit 2: RESTful API Versioning (v1 vs v2) and RBAC Authorization</h1>
+    <p class="subtitle">Covers Lectures L18 to L23. Compare versioned API response envelopes and test Role-Based Access Control enforcement.</p>
+
+    <div class="card">
+      <h2>Interactive RBAC & Versioning Tester</h2>
+      <label for="roleSelect">Active Request Header (x-user-role)</label>
+      <select id="roleSelect">
+        <option value="">(none - unauthenticated)</option>
+        <option value="student" selected>student</option>
+        <option value="faculty">faculty</option>
+        <option value="admin">admin</option>
+      </select>
+
+      <div class="btn-row">
+        <button onclick="callEndpoint('GET', '/api/v1/users')">GET /api/v1/users</button>
+        <button onclick="callEndpoint('GET', '/api/v2/users')">GET /api/v2/users</button>
+        <button class="secondary" onclick="callEndpoint('POST', '/api/v2/users')">POST /api/v2/users (Faculty/Admin)</button>
+        <button class="secondary" onclick="callEndpoint('DELETE', '/api/v2/users/3')">DELETE /api/v2/users/3 (Admin Only)</button>
+      </div>
+      <pre id="apiOutput">Select a role and trigger an endpoint to inspect HTTP status codes and payloads.</pre>
+    </div>
+
+    <div class="card" id="source">
+      <h2>Source Code: server.js</h2>
+      <pre><code>function authorize(...allowedRoles) {
+  return (req, res, next) => {
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        error: `Forbidden: role '${req.user.role}' cannot access this endpoint.`
+      });
+    }
+    next();
+  };
+}
+
+app.get('/api/v1/users', authenticate, authorize('student', 'faculty', 'admin'), (req, res) => {
+  res.json(records.map(({ id, name, role }) => ({ id, name, role })));
+});
+
+app.get('/api/v2/users', authenticate, authorize('student', 'faculty', 'admin'), (req, res) => {
+  res.json({
+    success: true,
+    apiVersion: 'v2',
+    meta: { count: records.length, timestamp: new Date().toISOString() },
+    data: records
+  });
+});</code></pre>
+    </div>
+
+    <div class="unit-nav">
+      <a href="../Unit2-SQL-Schema-Optimization/demo.html">Previous: Unit 2 SQL Optimization</a>
+      <a href="../Unit3-Caching-ThirdParty-API/demo.html">Next: Unit 3 Caching and APIs</a>
+    </div>
+  </div>
+
+  <script>
+    const records = [
+      { id: 1, name: 'Satyam Koranga', role: 'student', department: 'CSE', cgpa: 8.9 },
+      { id: 2, name: 'Dr. Prateek Raj', role: 'faculty', department: 'SoCS', cgpa: null },
+      { id: 3, name: 'Ayush Yadav', role: 'student', department: 'CSE', cgpa: 8.6 }
+    ];
+
+    function callEndpoint(method, path) {
+      const role = document.getElementById('roleSelect').value;
+      const out = document.getElementById('apiOutput');
+
+      if (!role) {
+        out.textContent = JSON.stringify({
+          httpStatus: 401,
+          body: { success: false, error: 'Authentication header x-user-role is missing' }
+        }, null, 2);
+        return;
+      }
+
+      if (path === '/api/v1/users') {
+        out.textContent = JSON.stringify({
+          httpStatus: 200,
+          body: records.map(({ id, name, role }) => ({ id, name, role }))
+        }, null, 2);
+        return;
+      }
+
+      if (method === 'GET' && path === '/api/v2/users') {
+        out.textContent = JSON.stringify({
+          httpStatus: 200,
+          body: { success: true, apiVersion: 'v2', meta: { count: records.length, timestamp: new Date().toISOString() }, data: records }
+        }, null, 2);
+        return;
+      }
+
+      if (method === 'POST' && !['faculty', 'admin'].includes(role)) {
+        out.textContent = JSON.stringify({
+          httpStatus: 403,
+          body: { success: false, error: `Forbidden: role '${role}' cannot access this endpoint. Required: faculty or admin` }
+        }, null, 2);
+        return;
+      }
+
+      if (method === 'POST') {
+        const created = { id: records.length + 1, name: 'New Student', role: 'student', department: 'CSE', cgpa: null };
+        out.textContent = JSON.stringify({
+          httpStatus: 201,
+          body: { success: true, apiVersion: 'v2', data: created }
+        }, null, 2);
+        return;
+      }
+
+      if (method === 'DELETE' && role !== 'admin') {
+        out.textContent = JSON.stringify({
+          httpStatus: 403,
+          body: { success: false, error: `Forbidden: role '${role}' cannot access this endpoint. Required: admin` }
+        }, null, 2);
+        return;
+      }
+
+      out.textContent = JSON.stringify({
+        httpStatus: 200,
+        body: { success: true, deleted: records[2] }
+      }, null, 2);
+    }
+  </script>
+</body>
+</html>

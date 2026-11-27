@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1 - HTTP, Cookies, Sessions and REST API</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1050px; margin: 28px auto; padding: 0 20px; }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 24px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+    .card h2 { font-size: 17px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
+    input, select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    button.secondary { background: #6e7781; }
+    button:hover { opacity: 0.9; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; margin-top: 10px; }
+    .unit-nav { display: flex; justify-content: space-between; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .unit-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Unit 1 Code Demo</div>
+    <div>
+      <a href="../../">Home</a>
+      <a href="../">Theory Index</a>
+      <a href="./">Unit 1 Docs</a>
+      <a href="../Unit2-SQL-Schema-Optimization/demo.html">Next: Unit 2 SQL</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Unit 1: HTTP Inspection, Cookies, Sessions and REST API</h1>
+    <p class="subtitle">Covers Lectures L04, L05, and L06. Interactive browser simulator paired with the runnable Express implementation.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1. Cookie Lifecycle Simulator</h2>
+        <label for="cookieTheme">Preference Value (theme)</label>
+        <select id="cookieTheme">
+          <option value="light">light</option>
+          <option value="dark">dark</option>
+          <option value="high-contrast">high-contrast</option>
+        </select>
+        <div class="btn-row">
+          <button onclick="setCookie()">GET /cookie/set</button>
+          <button class="secondary" onclick="readCookie()">GET /cookie/read</button>
+          <button class="secondary" onclick="clearCookie()">GET /cookie/clear</button>
+        </div>
+        <pre id="cookieOutput">Click an action to inspect Set-Cookie and Cookie headers.</pre>
+      </div>
+
+      <div class="card">
+        <h2>2. Server-Side Session State</h2>
+        <label for="sessionUser">Username</label>
+        <input id="sessionUser" type="text" value="satyam" placeholder="Enter username">
+        <div class="btn-row">
+          <button onclick="loginSession()">POST /session/login</button>
+          <button class="secondary" onclick="readProfile()">GET /session/profile</button>
+          <button class="secondary" onclick="logoutSession()">POST /session/logout</button>
+        </div>
+        <pre id="sessionOutput">No active session.</pre>
+      </div>
+
+      <div class="card">
+        <h2>3. RESTful Tasks Endpoint</h2>
+        <label for="taskTitle">New Task Title</label>
+        <input id="taskTitle" type="text" placeholder="e.g. Test Postman collection">
+        <div class="btn-row">
+          <button onclick="listTasks()">GET /api/tasks</button>
+          <button onclick="createTask()">POST /api/tasks</button>
+        </div>
+        <pre id="taskOutput">Click GET /api/tasks to inspect JSON response.</pre>
+      </div>
+    </div>
+
+    <div class="card" id="source">
+      <h2>Source Code: server.js</h2>
+      <pre><code>const express = require('express');
+const crypto = require('crypto');
+const app = express();
+const PORT = 4001;
+app.use(express.json());
+
+const sessions = new Map();
+const tasks = [
+  { id: 1, title: 'Review HTTP status codes', status: 'done' },
+  { id: 2, title: 'Implement cookie parser', status: 'in-progress' }
+];
+
+app.get('/cookie/set', (req, res) => {
+  const theme = req.query.theme || 'light';
+  res.setHeader('Set-Cookie', `theme=${encodeURIComponent(theme)}; Path=/; Max-Age=3600; HttpOnly; SameSite=Lax`);
+  res.json({ message: 'Cookie stored on client', cookie: { theme } });
+});
+
+app.post('/session/login', (req, res) => {
+  const { username } = req.body;
+  const sid = crypto.randomBytes(16).toString('hex');
+  sessions.set(sid, { username, loginTime: new Date().toISOString(), visits: 1 });
+  res.setHeader('Set-Cookie', `sid=${sid}; Path=/; HttpOnly; SameSite=Lax`);
+  res.json({ message: 'Session created', sid, user: username });
+});
+
+app.get('/session/profile', (req, res) => {
+  const session = sessions.get(req.cookies.sid);
+  if (!session) return res.status(401).json({ error: 'No active session found.' });
+  session.visits += 1;
+  res.json({ sid: req.cookies.sid, session });
+});
+
+app.listen(PORT, () => console.log(`Unit 1 server listening on http://localhost:${PORT}`));</code></pre>
+    </div>
+
+    <div class="unit-nav">
+      <a href="../">Back to Theory Index</a>
+      <a href="../Unit2-SQL-Schema-Optimization/demo.html">Next: Unit 2 SQL Schema and Optimization</a>
+    </div>
+  </div>
+
+  <script>
+    const sessionStore = new Map();
+    let clientCookies = {};
+    const tasks = [
+      { id: 1, title: 'Review HTTP status codes', status: 'done' },
+      { id: 2, title: 'Implement cookie parser', status: 'in-progress' }
+    ];
+
+    function setCookie() {
+      const val = document.getElementById('cookieTheme').value;
+      clientCookies.theme = val;
+      document.getElementById('cookieOutput').textContent = JSON.stringify({
+        status: 200,
+        setCookieHeader: `theme=${val}; Path=/; Max-Age=3600; HttpOnly; SameSite=Lax`,
+        body: { message: 'Cookie stored on client', cookie: { theme: val } }
+      }, null, 2);
+    }
+
+    function readCookie() {
+      document.getElementById('cookieOutput').textContent = JSON.stringify({
+        status: 200,
+        requestCookieHeader: Object.entries(clientCookies).map(([k, v]) => `${k}=${v}`).join('; ') || '(empty)',
+        cookies: clientCookies
+      }, null, 2);
+    }
+
+    function clearCookie() {
+      delete clientCookies.theme;
+      document.getElementById('cookieOutput').textContent = JSON.stringify({
+        status: 200,
+        setCookieHeader: 'theme=; Path=/; Max-Age=0',
+        body: { message: 'Cookie cleared' }
+      }, null, 2);
+    }
+
+    function loginSession() {
+      const username = document.getElementById('sessionUser').value.trim();
+      if (!username) return;
+      const sid = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2, '0')).join('');
+      sessionStore.set(sid, { username, loginTime: new Date().toISOString(), visits: 1 });
+      clientCookies.sid = sid;
+      document.getElementById('sessionOutput').textContent = JSON.stringify({
+        status: 200,
+        body: { message: 'Session created', sid, user: username }
+      }, null, 2);
+    }
+
+    function readProfile() {
+      const sid = clientCookies.sid;
+      const session = sid ? sessionStore.get(sid) : null;
+      if (!session) {
+        document.getElementById('sessionOutput').textContent = JSON.stringify({
+          status: 401,
+          body: { error: 'No active session found. Please log in first.' }
+        }, null, 2);
+        return;
+      }
+      session.visits += 1;
+      document.getElementById('sessionOutput').textContent = JSON.stringify({
+        status: 200,
+        body: { sid, session }
+      }, null, 2);
+    }
+
+    function logoutSession() {
+      if (clientCookies.sid) sessionStore.delete(clientCookies.sid);
+      delete clientCookies.sid;
+      document.getElementById('sessionOutput').textContent = JSON.stringify({
+        status: 200,
+        body: { message: 'Session destroyed' }
+      }, null, 2);
+    }
+
+    function listTasks() {
+      document.getElementById('taskOutput').textContent = JSON.stringify({
+        status: 200,
+        count: tasks.length,
+        tasks
+      }, null, 2);
+    }
+
+    function createTask() {
+      const title = document.getElementById('taskTitle').value.trim();
+      if (!title) return;
+      const task = { id: tasks.length + 1, title, status: 'pending' };
+      tasks.push(task);
+      document.getElementById('taskTitle').value = '';
+      document.getElementById('taskOutput').textContent = JSON.stringify({
+        status: 201,
+        created: task,
+        totalTasks: tasks.length
+      }, null, 2);
+    }
+  </script>
+</body>
+</html>

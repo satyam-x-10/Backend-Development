@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 4 - Docker, CI/CD and Health Monitoring</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1050px; margin: 28px auto; padding: 0 20px; }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    .card h2 { font-size: 17px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    button.secondary { background: #6e7781; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; margin-top: 10px; }
+    .unit-nav { display: flex; justify-content: space-between; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .unit-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Unit 4 DevOps & Monitoring</div>
+    <div>
+      <a href="../../">Home</a>
+      <a href="../">Theory Index</a>
+      <a href="../Unit3-Caching-ThirdParty-API/demo.html">Prev: Unit 3</a>
+      <a href="./">Unit 4 Docs</a>
+      <a href="../Unit5-Microservices-Discovery/demo.html">Next: Unit 5 Microservices</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Unit 4: Containerization, CI/CD Testing and Health Monitoring</h1>
+    <p class="subtitle">Covers Lectures L37 to L45. Live probe simulation for /health, /metrics, and automated CI pipeline stages.</p>
+
+    <div class="card">
+      <h2>Health Probe and CI/CD Pipeline Simulator</h2>
+      <div class="btn-row">
+        <button onclick="probeHealth()">GET /health</button>
+        <button class="secondary" onclick="probeMetrics()">GET /metrics</button>
+        <button onclick="runPipeline()">Simulate GitHub Actions CI Run</button>
+      </div>
+      <pre id="devopsOutput">Click a probe or run the CI pipeline simulation above.</pre>
+    </div>
+
+    <div class="card" id="source">
+      <h2>Dockerfile and GitHub Actions Pipeline</h2>
+      <pre><code># Dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY . .
+EXPOSE 4005
+HEALTHCHECK --interval=30s --timeout=5s CMD wget -qO- http://localhost:4005/health || exit 1
+CMD ["node", "server.js"]</code></pre>
+      <pre><code># ci-workflow.yml
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install
+      - run: npm test
+      - run: docker build -t unit4-backend:ci .</code></pre>
+    </div>
+
+    <div class="unit-nav">
+      <a href="../Unit3-Caching-ThirdParty-API/demo.html">Previous: Unit 3 Caching and APIs</a>
+      <a href="../Unit5-Microservices-Discovery/demo.html">Next: Unit 5 Microservices Discovery</a>
+    </div>
+  </div>
+
+  <script>
+    let reqCount = 4;
+    function probeHealth() {
+      reqCount += 1;
+      document.getElementById('devopsOutput').textContent = JSON.stringify({
+        status: 'healthy',
+        uptimeSec: Math.floor(performance.now() / 1000) + 120,
+        timestamp: new Date().toISOString()
+      }, null, 2);
+    }
+
+    function probeMetrics() {
+      reqCount += 1;
+      document.getElementById('devopsOutput').textContent = JSON.stringify({
+        uptimeSec: Math.floor(performance.now() / 1000) + 120,
+        totalRequests: reqCount,
+        totalErrors: 0,
+        avgLatencyMs: 1.84,
+        memoryMB: { rss: 44.2, heapUsed: 18.6 }
+      }, null, 2);
+    }
+
+    function runPipeline() {
+      document.getElementById('devopsOutput').textContent =
+`[Step 1/5] actions/checkout@v4 ...................... PASSED (0.8s)
+[Step 2/5] actions/setup-node@v4 (Node 20) .......... PASSED (1.4s)
+[Step 3/5] npm install .............................. PASSED (2.9s)
+[Step 4/5] node --test server.test.js (2/2 tests) ... PASSED (0.4s)
+[Step 5/5] docker build -t unit4-backend:ci . ....... PASSED (6.1s)
+Pipeline Status: SUCCESS`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3 - Caching and Third-Party API Integration</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1050px; margin: 28px auto; padding: 0 20px; }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    .card h2 { font-size: 17px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
+    input, select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    button.secondary { background: #6e7781; }
+    .stats { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; margin: 10px 0; padding: 10px; background: var(--code-bg); border-radius: 6px; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; margin-top: 10px; }
+    .unit-nav { display: flex; justify-content: space-between; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .unit-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Unit 3 Caching</div>
+    <div>
+      <a href="../../">Home</a>
+      <a href="../">Theory Index</a>
+      <a href="../Unit2-REST-Versioning-RBAC/demo.html">Prev: Unit 2 REST</a>
+      <a href="./">Unit 3 Docs</a>
+      <a href="../Unit4-Docker-CICD-Monitoring/demo.html">Next: Unit 4 DevOps</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Unit 3: Third-Party API Integration and TTL Caching</h1>
+    <p class="subtitle">Covers Lectures L25, L28, and L31. Measure cache MISS vs cache HIT latency with automatic TTL expiration.</p>
+
+    <div class="card">
+      <h2>Live Cache-Aside Simulator (TTL = 10 seconds)</h2>
+      <div class="controls">
+        <select id="citySelect">
+          <option value="Dehradun">Dehradun</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Bengaluru">Bengaluru</option>
+        </select>
+        <button onclick="fetchWeather()">GET /api/weather/:city</button>
+        <button class="secondary" onclick="clearCache()">DELETE /api/cache (Invalidate)</button>
+      </div>
+      <div class="stats" id="statsBar">Hits: 0 | Misses: 0 | Cached Keys: 0</div>
+      <pre id="cacheOutput">Request a city twice within 10 seconds to observe X-Cache: MISS followed by X-Cache: HIT.</pre>
+    </div>
+
+    <div class="card" id="source">
+      <h2>Source Code: server.js</h2>
+      <pre><code>app.get('/api/weather/:city', async (req, res) => {
+  const city = req.params.city.trim();
+  const cacheKey = `weather:${city.toLowerCase()}`;
+
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    res.setHeader('X-Cache', 'HIT');
+    return res.json({ source: 'cache', ...cached });
+  }
+
+  const freshData = await fetchExternalWeather(city);
+  cache.set(cacheKey, freshData);
+  res.setHeader('X-Cache', 'MISS');
+  res.json({ source: 'upstream-api', ...freshData });
+});</code></pre>
+    </div>
+
+    <div class="unit-nav">
+      <a href="../Unit2-REST-Versioning-RBAC/demo.html">Previous: Unit 2 REST Versioning and RBAC</a>
+      <a href="../Unit4-Docker-CICD-Monitoring/demo.html">Next: Unit 4 Docker, CI/CD and Monitoring</a>
+    </div>
+  </div>
+
+  <script>
+    const cacheStore = new Map();
+    let hits = 0;
+    let misses = 0;
+    const TTL_MS = 10000;
+
+    function updateStats() {
+      const now = Date.now();
+      for (const [k, v] of cacheStore.entries()) {
+        if (now > v.expiresAt) cacheStore.delete(k);
+      }
+      document.getElementById('statsBar').textContent = `Hits: ${hits} | Misses: ${misses} | Cached Keys: ${cacheStore.size}`;
+    }
+
+    async function fetchWeather() {
+      const city = document.getElementById('citySelect').value;
+      const key = `weather:${city.toLowerCase()}`;
+      const start = performance.now();
+      const entry = cacheStore.get(key);
+
+      if (entry && Date.now() <= entry.expiresAt) {
+        hits += 1;
+        updateStats();
+        const elapsed = (performance.now() - start).toFixed(2);
+        document.getElementById('cacheOutput').textContent = JSON.stringify({
+          header_X_Cache: 'HIT',
+          responseTimeMs: Number(elapsed),
+          ttlRemainingSec: Math.ceil((entry.expiresAt - Date.now()) / 1000),
+          payload: { source: 'cache', ...entry.value }
+        }, null, 2);
+        return;
+      }
+
+      misses += 1;
+      document.getElementById('cacheOutput').textContent = 'Fetching from upstream third-party API (simulated 260ms)...';
+      await new Promise(r => setTimeout(r, 260));
+      const temps = { Dehradun: 22, Delhi: 31, Mumbai: 29, Bengaluru: 24 };
+      const fresh = { city, temperatureC: temps[city] || 25, condition: 'Clear Sky', fetchedAt: new Date().toISOString() };
+      cacheStore.set(key, { value: fresh, expiresAt: Date.now() + TTL_MS });
+      updateStats();
+      const elapsed = (performance.now() - start).toFixed(1);
+      document.getElementById('cacheOutput').textContent = JSON.stringify({
+        header_X_Cache: 'MISS',
+        responseTimeMs: Number(elapsed),
+        ttlRemainingSec: 10,
+        payload: { source: 'upstream-api', ...fresh }
+      }, null, 2);
+    }
+
+    function clearCache() {
+      cacheStore.clear();
+      updateStats();
+      document.getElementById('cacheOutput').textContent = JSON.stringify({ message: 'Cache invalidated' }, null, 2);
+    }
+  </script>
+</body>
+</html>

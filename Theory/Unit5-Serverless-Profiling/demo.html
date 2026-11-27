@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 5 - Serverless FaaS and Performance Profiling</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --ink: #1f2328; --muted: #59636e; --accent: #0969da; --border: #d0d7de; --code-bg: #f0f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    nav.topbar { background: #1f2328; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+    nav.topbar a { color: #e6edf3; text-decoration: none; font-size: 14px; padding: 4px 8px; border-radius: 4px; }
+    nav.topbar a:hover { background: #30363d; }
+    .container { max-width: 1050px; margin: 28px auto; padding: 0 20px; }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-bottom: 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    .card h2 { font-size: 17px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+    button { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    button.secondary { background: #6e7781; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 13px; margin-top: 10px; }
+    .unit-nav { display: flex; justify-content: space-between; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .unit-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div><strong>Backend Development Theory</strong> | Unit 5 Serverless & Profiling</div>
+    <div>
+      <a href="../../">Home</a>
+      <a href="../">Theory Index</a>
+      <a href="../Unit5-Microservices-Discovery/demo.html">Prev: Unit 5 Discovery</a>
+      <a href="./">Unit 5 Docs</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Unit 5: Serverless (FaaS) and Performance Profiling</h1>
+    <p class="subtitle">Covers Lectures L55 and L58. Simulate AWS Lambda cold/warm starts and run a live browser CPU benchmark.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1. Serverless Lambda Cold vs Warm Invocation</h2>
+        <div class="btn-row">
+          <button onclick="invokeLambda()">Invoke Lambda Event</button>
+          <button class="secondary" onclick="resetContainer()">Recycle Container (Cold Start)</button>
+        </div>
+        <pre id="lambdaOutput">Click "Invoke Lambda Event" to trace cold start vs warm reuse latency.</pre>
+      </div>
+
+      <div class="card">
+        <h2>2. Live Performance Profiler (O(n^2) vs O(n))</h2>
+        <div class="btn-row">
+          <button onclick="runProfiler()">Run 10,000-Item CPU Benchmark</button>
+        </div>
+        <pre id="profileOutput">Click above to measure execution speed with Array.find vs Map.get.</pre>
+      </div>
+    </div>
+
+    <div class="card" id="source">
+      <h2>Source Code: lambda_and_profiler.js</h2>
+      <pre><code>exports.handler = async (event, context = {}) => {
+  const start = performance.now();
+  const coldStart = !isWarm;
+  isWarm = true;
+  if (coldStart) await new Promise((r) => setTimeout(r, 120));
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      coldStart,
+      durationMs: Number((performance.now() - start).toFixed(3))
+    })
+  };
+};</code></pre>
+    </div>
+
+    <div class="unit-nav">
+      <a href="../Unit5-Microservices-Discovery/demo.html">Previous: Unit 5 Microservices Discovery</a>
+      <a href="../">Back to Theory Index</a>
+    </div>
+  </div>
+
+  <script>
+    let warm = false;
+    let count = 0;
+
+    async function invokeLambda() {
+      const start = performance.now();
+      const cold = !warm;
+      warm = true;
+      count += 1;
+      if (cold) {
+        document.getElementById('lambdaOutput').textContent = 'Initializing runtime container (cold start)...';
+        await new Promise(r => setTimeout(r, 140));
+      }
+      document.getElementById('lambdaOutput').textContent = JSON.stringify({
+        statusCode: 200,
+        coldStart: cold,
+        invocationCount: count,
+        event: { source: 'aws:s3', key: 'uploads/report.pdf' },
+        durationMs: Number((performance.now() - start).toFixed(2))
+      }, null, 2);
+    }
+
+    function resetContainer() {
+      warm = false;
+      count = 0;
+      document.getElementById('lambdaOutput').textContent = 'Container recycled. Next invocation will trigger a cold start.';
+    }
+
+    function runProfiler() {
+      const size = 10000;
+      const dataset = Array.from({ length: size }, (_, i) => ({ id: i, val: i % 50 }));
+      const queries = Array.from({ length: 1500 }, (_, i) => (i * 7) % size);
+
+      const t1 = performance.now();
+      let s1 = 0;
+      for (const q of queries) {
+        const hit = dataset.find(x => x.id === q);
+        if (hit) s1 += hit.val;
+      }
+      const slowMs = Number((performance.now() - t1).toFixed(2));
+
+      const t2 = performance.now();
+      const map = new Map(dataset.map(x => [x.id, x.val]));
+      let s2 = 0;
+      for (const q of queries) s2 += map.get(q) || 0;
+      const fastMs = Number((performance.now() - t2).toFixed(2));
+
+      document.getElementById('profileOutput').textContent = JSON.stringify({
+        records: size,
+        lookups: queries.length,
+        linearArrayFindMs: slowMs,
+        hashMapLookupMs: fastMs,
+        speedupFactor: `${(slowMs / Math.max(fastMs, 0.01)).toFixed(1)}x faster`,
+        checksumVerified: s1 === s2
+      }, null, 2);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "unit1-sessions-cookies-api",
+  "version": "1.0.0",
+  "description": "Unit 1 - HTTP Request Inspection, Cookies, Server-Side Sessions and REST API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

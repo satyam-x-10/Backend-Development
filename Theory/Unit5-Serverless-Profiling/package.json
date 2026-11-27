@@ -1,0 +1,9 @@
+{
+  "name": "unit5-serverless-profiling",
+  "version": "1.0.0",
+  "description": "Unit 5 - AWS Lambda Serverless Handler and Performance Profiling",
+  "main": "lambda_and_profiler.js",
+  "scripts": {
+    "start": "node lambda_and_profiler.js"
+  }
+}
