@@ -14,6 +14,13 @@ This experiment combines a complete RESTful CRUD API with JSON Web Token (JWT) b
 | POST | `/auth/login` | Public | Submits credentials and returns a signed JWT |
 | GET | `/auth/me` | Protected | Returns the decoded token payload for the current user |
 
+## output preview for exp 08 
+<img width="1481" height="976" alt="Screenshot 2026-11-27 221428" src="https://github.com/user-attachments/assets/edf69aad-a642-454b-84ab-f8a626daeaea" /> 
+<img width="1442" height="292" alt="Screenshot 2026-11-27 224320" src="https://github.com/user-attachments/assets/a739f554-f8a5-4f4a-bd44-e089c3747b53" />
+<img width="1445" height="487" alt="Screenshot 2026-11-27 224417" src="https://github.com/user-attachments/assets/ce1bb4ea-3280-4df6-89b2-75b60df10373" />
+
+
+
 ### Books CRUD Routes (Exp 07)
 | Method | Route | Access | Description |
 |---|---|---|---|
@@ -22,6 +29,16 @@ This experiment combines a complete RESTful CRUD API with JSON Web Token (JWT) b
 | POST | `/api/books` | Protected | Adds a new book record |
 | PUT | `/api/books/:id` | Protected | Modifies attributes of an existing book record |
 | DELETE | `/api/books/:id` | Protected | Deletes a book record |
+
+
+## output preview for exp 07
+<img width="1481" height="976" alt="Screenshot 2026-11-27 221428" src="https://github.com/user-attachments/assets/edf69aad-a642-454b-84ab-f8a626daeaea" />
+<img width="890" height="977" alt="Screenshot 2026-11-27 221852" src="https://github.com/user-attachments/assets/3f13a6e5-8d4a-4ca2-b3bf-496f6764d746" />
+<img width="912" height="981" alt="Screenshot 2026-11-27 221907" src="https://github.com/user-attachments/assets/bdc2031f-3ecd-4178-ab79-15430d39fa88" />
+
+
+
+
 
 ## Source Files
 ```
