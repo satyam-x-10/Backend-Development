@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Edit Post</h1>
+
+    <form action="/posts/{{ post._id }}/edit" method="POST">
+        <div>
+            <label>Title:</label><br>
+            <input type="text" name="title" value="{{ post.title }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Author:</label><br>
+            <input type="text" name="author" value="{{ post.author }}" required>
+        </div>
+        <br>
+        <div>
+            <label>Content:</label><br>
+            <textarea name="content" rows="6" cols="40" required>{{ post.content }}</textarea>
+        </div>
+        <br>
+        <button type="submit">Update Post</button>
+    </form>
+
+    <br>
+    <a href="/posts">Back to Posts List</a>
+</body>
+</html>

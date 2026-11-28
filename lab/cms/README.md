@@ -1,31 +1,43 @@
-# Content Management System (CMS Laboratory Project)
+# CMS Application — Containerized with Docker
 
-A server-side rendered blog content management application built with Python, Flask, PyMongo, and Jinja2 templates, storing records in a local MongoDB database.
+A simple Content Management System built with Flask that lets you create, view, update, and delete blog posts. The application stores data in a JSON file inside a mounted Docker volume, so your posts survive container restarts and rebuilds.
 
----
+## Technologies Used
+
+- Python 3.11
+- Flask
+- MongoDB (optional, used if running locally with Mongo installed)
+- Docker
+- JSON file storage (used inside Docker when MongoDB is not available)
+
+## Application Features
+
+- Create a new post with title, author, and content
+- View all posts on the home page
+- Read the full content of any individual post
+- Edit an existing post
+- Delete a post
 
 ## Application Previews
 
-### 1. Posts Overview (`GET /` and `GET /posts`)
-Displays all saved blog posts including title, author name, and publication date. The post body content is excluded from the listing query projection for better performance.
+### Posts Overview
+Displays all saved blog posts with title, author name, and date. Each post has Edit and Delete actions inline.
+
 ![All Posts List](screenshots/01_cms_home_posts_list.png)
 
----
+### Create Post Form
+Input form for composing and submitting new articles.
 
-### 2. Create Post Form (`GET /posts/new` and `POST /posts`)
-Provides an input form for composing and submitting new articles. Validates required fields, appends a server-generated timestamp, and persists the document into MongoDB.
 ![Create New Post Form](screenshots/02_cms_create_new_post.png)
 
----
+### Individual Post View
+Full post content along with server request logs.
 
-### 3. Individual Post View (`GET /posts/<id>`)
-Queries MongoDB using the unique BSON ObjectId and displays the full post content along with active server request logs in the terminal.
-![Post Details and Terminal](screenshots/03_cms_post_detail_vscode.png)
+![Post Details](screenshots/03_cms_post_detail_vscode.png)
 
----
+### Database View
+MongoDB Compass showing stored documents.
 
-### 4. Database Collection View (`cms_lab.posts`)
-View from MongoDB Compass showing stored documents inside the `cms_lab` database under the `posts` collection.
 ![MongoDB Compass Collection](screenshots/04_cms_mongodb_compass.png)
 
 ---
@@ -34,70 +46,154 @@ View from MongoDB Compass showing stored documents inside the `cms_lab` database
 
 ```text
 cms/
-├── app.py                # Flask application routes and PyMongo database queries
-├── requirements.txt      # Python dependencies (Flask, pymongo)
-├── screenshots/          # Application preview captures
-│   ├── 01_cms_home_posts_list.png
-│   ├── 02_cms_create_new_post.png
-│   ├── 03_cms_post_detail_vscode.png
-│   └── 04_cms_mongodb_compass.png
-├── static/
-│   └── style.css         # Stylesheet
+├── app.py
+├── Dockerfile
+├── .dockerignore
+├── requirements.txt
+├── README.md
+├── docker-data/
+│   └── posts.json        (created at runtime — persists post data)
 ├── templates/
-│   ├── posts.html        # Post listing template
-│   ├── new-post.html     # Create post form template
-│   └── post.html         # Single post detail template
-└── README.md             # Project documentation
+│   ├── posts.html
+│   ├── post.html
+│   ├── new-post.html
+│   └── edit-post.html
+├── static/
+│   └── style.css
+└── screenshots/
 ```
 
 ---
 
 ## Endpoints and Routes
 
-| Method | Route | Description | Rendered Template |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/` or `/posts` | Lists all posts with projected fields (title, author, createdAt) | `templates/posts.html` |
-| **GET** | `/posts/new` | Renders the new post submission form | `templates/new-post.html` |
-| **POST** | `/posts` | Validates input, writes to `cms_lab.posts`, and redirects to listing | Redirects to `/posts` |
-| **GET** | `/posts/<id>` | Retrieves a specific document by its ObjectId | `templates/post.html` |
+| Method | Route | Description |
+| :--- | :--- | :--- |
+| GET | `/` or `/posts` | Lists all posts |
+| GET | `/posts/new` | Renders the create post form |
+| POST | `/posts` | Saves a new post |
+| GET | `/posts/<id>` | Shows full content of a post |
+| GET | `/posts/<id>/edit` | Renders the edit form for a post |
+| POST | `/posts/<id>/edit` | Saves the edited post |
+| POST | `/posts/<id>/delete` | Deletes a post |
 
 ---
 
-## Document Schema (Collection: `posts`)
+## Local Setup (without Docker)
 
-```json
-{
-  "_id": "6abbd407a51eba88c2df0bcb",
-  "title": "Sample Blog Title",
-  "author": "Satyam",
-  "content": "Detailed post content goes here.",
-  "createdAt": "26 November 2026"
-}
-```
+Make sure Python is installed, then run from inside the `cms/` directory:
 
----
-
-## Setup and Execution
-
-### 1. Prerequisites
-- Python 3.8 or higher installed.
-- MongoDB daemon running locally on port 27017.
-
-### 2. Install Dependencies and Launch Server
 ```bash
-cd lab/cms
 pip install -r requirements.txt
 python app.py
 ```
 
-### 3. Open in Browser
-- Post Overview: [http://127.0.0.1:5000/posts](http://127.0.0.1:5000/posts)
-- Create Post Form: [http://127.0.0.1:5000/posts/new](http://127.0.0.1:5000/posts/new)
+Open the application at:
+
+```
+http://localhost:5000
+```
+
+If MongoDB is running locally, the app connects to it automatically. If not, it falls back to saving posts in a JSON file at `./data/posts.json`.
 
 ---
 
-## Features
-- Direct database connectivity using `pymongo.MongoClient` with fallback handling.
-- Server-side rendering using Jinja2 template inheritance.
-- Safe resource querying via BSON `ObjectId` parsing.
-- Server-generated timestamps on document insertion.
+## Docker Setup
+
+### Build the Image
+
+From inside the `cms/` directory:
+
+```bash
+docker build -t cms-app:v1 .
+```
+
+Verify the image was created:
+
+```bash
+docker images
+```
+
+### Run the Container with Persistent Storage
+
+On Linux or macOS:
+
+```bash
+docker run -d \
+  --name cms-app \
+  -p 8080:5000 \
+  -v "$(pwd)/docker-data:/app/data" \
+  cms-app:v1
+```
+
+On Windows PowerShell:
+
+```powershell
+docker run -d `
+  --name cms-app `
+  -p 8080:5000 `
+  -v "${PWD}/docker-data:/app/data" `
+  cms-app:v1
+```
+
+### Application URL
+
+```
+http://localhost:8080
+```
+
+---
+
+## Volume Mapping
+
+The flag `-v "${PWD}/docker-data:/app/data"` maps the local `docker-data/` folder on your machine to `/app/data` inside the container. Flask writes `posts.json` into `/app/data`, which means every post you create is actually saved in the `docker-data/` folder on your host. That folder is never deleted when you stop or remove the container.
+
+---
+
+## Data Persistence Test
+
+Create one or more posts in the browser, then stop and remove the container:
+
+```bash
+docker stop cms-app
+docker rm cms-app
+```
+
+Start a brand new container using the same volume:
+
+```powershell
+docker run -d `
+  --name cms-app `
+  -p 8080:5000 `
+  -v "${PWD}/docker-data:/app/data" `
+  cms-app:v1
+```
+
+Open `http://localhost:8080` again. All previously created posts are still there because they were saved in `docker-data/posts.json` on your host machine.
+
+---
+
+## Useful Docker Commands
+
+```bash
+# Build the image
+docker build -t cms-app:v1 .
+
+# Run the container with a volume
+docker run -d --name cms-app -p 8080:5000 -v "${PWD}/docker-data:/app/data" cms-app:v1
+
+# List running containers
+docker ps
+
+# View container logs
+docker logs cms-app
+
+# Open a shell inside the running container
+docker exec -it cms-app sh
+
+# Stop the container
+docker stop cms-app
+
+# Remove the container
+docker rm cms-app
+```

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <h1>{{ post.title }}</h1>
@@ -12,6 +13,12 @@
     <p>{{ post.content }}</p>
     <hr>
     <br>
+    <a href="/posts/{{ post._id }}/edit">Edit Post</a>
+    &nbsp;&nbsp;
+    <form action="/posts/{{ post._id }}/delete" method="POST" style="display:inline;">
+        <button type="submit" onclick="return confirm('Delete this post?')">Delete Post</button>
+    </form>
+    <br><br>
     <a href="/posts">Back to All Posts</a>
 </body>
 </html>
